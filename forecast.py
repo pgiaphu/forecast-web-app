@@ -61,7 +61,7 @@ with st.sidebar:
         ###
         #shows = pd.melt(shows, id_vars=shows.columns[0])
         #shows["Date"] = shows["Date"].apply(lambda x: x.date())
-        shows2 = shows.copy(deep=True)
+        #shows2 = shows.copy(deep=True)
         #shows2["Date"] = shows2["Date"].apply(lambda x: x.strftime("%m-%Y"))
         #shows = pd.pivot_table(shows, values="value",index="variable",columns="Date").reset_index()
         #shows.rename({'variable': 'Material'}, axis=1, inplace=True)
@@ -95,16 +95,16 @@ st.write("Your data will show here.")
 
 #########################################
 
-gb = GridOptionsBuilder.from_dataframe(shows2)
+gb = GridOptionsBuilder.from_dataframe(shows)
 #gb.configure_default_column(shows2.columns[0])
-gb.configure_column(shows2.columns[0], rowGroup=True)
+gb.configure_column(shows.columns[0], rowGroup=True)
 ###
 
 #gb.configure_column(shows2['Material'],headerCheckboxSelection=False)
 gb.configure_selection(selection_mode="single",use_checkbox=True)
 
 #gb.configure_side_bar()
-gb.configure_columns(shows2.columns.values.tolist(),headerCheckboxSelection=False, editable=True)
+gb.configure_columns(shows.columns.values.tolist(),headerCheckboxSelection=False, editable=True)
 js = JsCode("""
             function(e) {
                 let api = e.api;
@@ -133,7 +133,7 @@ st.markdown("""
 
 
 response = AgGrid(
-    shows2,
+    shows,
     gridOptions=gridOptions,
     allow_unsafe_jscode=True, reload_data=False,
     enable_enterprise_modules=True,

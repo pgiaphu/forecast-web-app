@@ -109,8 +109,8 @@ with col1:
         gb = GridOptionsBuilder.from_dataframe(shows2)
         gb.configure_column(shows2.columns[0], rowGroup=True)
         ###
-        #gb.configure_default_column(enablePivot=False, enableValue=True, enableRowGroup=False,editable=True)
-        gb.configure_column(shows2.columns[1],headerCheckboxSelection=False)
+        #gb.configure_default_column(shows2.columns[1],enablePivot=False, enableValue=False, enableRowGroup=False,editable=False)
+        gb.configure_column(shows2['Material'],headerCheckboxSelection=False)
         gb.configure_selection(selection_mode="single",use_checkbox=True)
         
         #gb.configure_side_bar()

@@ -163,7 +163,7 @@ df.rename({'variable': 'Date'}, axis=1, inplace=True)
 df['Date'] = df['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-%Y").date())
 df = pd.DataFrame(df.pivot('Date','Attribute','value'))
 df.index = pd.to_datetime(df.index)
-df = df.apply(pd.to_numeric)
+#df = df.apply(pd.to_numeric)
 st.write(df)
 
 if 'Holt-Winter' in model:

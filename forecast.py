@@ -67,7 +67,7 @@ with st.sidebar:
         ###
         #shows = pd.melt(shows, id_vars=shows.columns[0])
         #shows["Date"] = shows["Date"].apply(lambda x: x.date())
-        #shows2 = shows.copy(deep=True)
+        shows2 = shows.copy(deep=True)
         #shows2["Date"] = shows2["Date"].apply(lambda x: x.strftime("%m-%Y"))
         #shows = pd.pivot_table(shows, values="value",index="variable",columns="Date").reset_index()
         #shows.rename({'variable': 'Material'}, axis=1, inplace=True)

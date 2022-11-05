@@ -159,6 +159,7 @@ model = st.multiselect(
 df = pd.DataFrame(response["selected_rows"])
 df = df.drop(['Group','Description'], axis=1)
 df = pd.melt(df,id_vars=df.columns[0])
+st.write(df)
 df.rename({'variable': 'Date'}, axis=1, inplace=True)
 df['Date'] = df['Date'].apply(lambda x: datetime.strptime("01-{}".format(x),"%d-%m-%Y").date())
 df = pd.DataFrame(df.pivot('Date','Material','value'))

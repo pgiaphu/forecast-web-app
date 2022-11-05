@@ -159,11 +159,11 @@ model = st.multiselect(
 df = pd.DataFrame(response["selected_rows"])
 df = df.drop(['Group','Description'], axis=1)
 df = pd.melt(df,id_vars=df.columns[0])
-st.write(df)
 df.rename({'variable': 'Date'}, axis=1, inplace=True)
 df['Date'] = df['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-%Y").date())
 df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
+st.write(df)
 df = df.apply(pd.to_numeric)
 if 'Holt-Winter' in model:
     df_HW = md.HoltWinter(df)

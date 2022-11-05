@@ -157,8 +157,8 @@ model = st.multiselect(
 
 
 df = pd.DataFrame(response["selected_rows"])
-st.write(df)
 df = df.drop(['Group','Description'], axis=1)
+st.write(df)
 df = pd.melt(df,id_vars=shows.columns[0])
 df.rename({'variable': 'Date'}, axis=1, inplace=True)
 df['Date'] = df['Date'].apply(lambda x: datetime.strptime("01-{}".format(x),"%d-%m-%Y").date())

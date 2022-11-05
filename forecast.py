@@ -164,7 +164,7 @@ df['Date'] = df['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-
 df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
 
-df = df.apply(pd.to_numeric)
+#df = df.apply(pd.to_numeric)
 st.write(df)
 if 'Holt-Winter' in model:
     df_HW = md.HoltWinter(df)

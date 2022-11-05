@@ -102,8 +102,8 @@ st.write("Your raw data will show here.")
 #########################################
 
 gb = GridOptionsBuilder.from_dataframe(shows2)
-gb.configure_default_column(shows2.columns[0])
-#gb.configure_column(shows2.columns[0], rowGroup=True)
+#gb.configure_default_column(shows2.columns[0])
+gb.configure_column(shows2.columns[0], rowGroup=True)
 ###
 
 #gb.configure_column(shows2['Material'],headerCheckboxSelection=False)

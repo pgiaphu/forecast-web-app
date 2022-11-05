@@ -158,6 +158,7 @@ model = st.multiselect(
 
 df = pd.DataFrame(response["selected_rows"])
 df = df.drop(['Group','Description'], axis=1)
+st.write(df)
 df = pd.melt(df,id_vars=shows.columns[0])
 st.write(df)
 df.rename({'variable': 'Date'}, axis=1, inplace=True)

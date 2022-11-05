@@ -178,7 +178,7 @@ if 'UCM' in model:
 
 
 df.drop(['_merge'],axis=1,inplace=True)
-
+st.write(df_UCM)
 
 #df.sort_values(by=['Material','Date'],inplace=True)
 

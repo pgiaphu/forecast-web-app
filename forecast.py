@@ -107,9 +107,10 @@ col1, col2 = st.columns([1,1])
 with col1:
     with st.container():
         gb = GridOptionsBuilder.from_dataframe(shows2)
-        gb.configure_column(shows2.columns[0], rowGroup=True)
+        gb.configure_default_column(shows2.columns[0],enablePivot=False, enableValue=False, enableRowGroup=True,editable=False)
+        #gb.configure_column(shows2.columns[0], rowGroup=True)
         ###
-        gb.configure_default_column(shows2.columns[1],enablePivot=False, enableValue=False, enableRowGroup=False,editable=False)
+
         #gb.configure_column(shows2['Material'],headerCheckboxSelection=False)
         gb.configure_selection(selection_mode="single",use_checkbox=True)
         

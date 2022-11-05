@@ -60,8 +60,7 @@ with st.sidebar:
     if uploaded_file is not None:
         shows = pd.read_excel(uploaded_file, sheet_name = "Sheet1")
         shows = shows.fillna(0)
-        #uploaded_file.seek(0)
-        #st.write(shows)
+ 
         
         #unpivot & pivot to WIDE-FORMAT
         ###
@@ -110,13 +109,13 @@ with col1:
         gb = GridOptionsBuilder.from_dataframe(shows2)
         
         ###
-        gb.configure_column('Group', rowGroup=True)
+        gb.configure_column(shows2.columns[0], rowGroup=True)
         ###
         #gb.configure_default_column(enablePivot=False, enableValue=True, enableRowGroup=False,editable=True)
         gb.configure_selection(selection_mode="single",use_checkbox=True)
         #gb.configure_column(shows2.columns[0],headerCheckboxSelection=False)
         #gb.configure_side_bar()
-        gb.configure_columns(shows2.columns.values.tolist(),headerCheckboxSelection=False, editable=True)
+        #gb.configure_columns(shows2.columns.values.tolist(),headerCheckboxSelection=False, editable=True)
         js = JsCode("""
                     function(e) {
                         let api = e.api;
@@ -149,7 +148,7 @@ with col1:
             shows2,
             gridOptions=gridOptions,
             allow_unsafe_jscode=True, reload_data=False,
-            #enable_enterprise_modules=True,
+            enable_enterprise_modules=True,
             update_mode=GridUpdateMode.MODEL_CHANGED,
             data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
             fit_columns_on_grid_load=False,

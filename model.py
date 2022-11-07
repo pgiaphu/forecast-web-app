@@ -66,7 +66,7 @@ def HoltWinter(df: pd.DataFrame):
         #fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), initialization_method="heuristic",seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
         fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]),seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
         arr_forecast = fitHW.forecast(fcperiod)
-        df_HW['HW_'+sku] = np.array(arr_forecast)
+        df_HW['HW_'+str(sku)] = np.array(arr_forecast)
         df_HW.set_index(future_index,inplace=True)
     
  return df_HW
@@ -90,7 +90,7 @@ def SARIMAX(df: pd.DataFrame):
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         try:
             arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
-            df_SARIMAX['SARIMAX_'+sku] = arr_forecast
+            df_SARIMAX['SARIMAX_'+str(sku)] = arr_forecast
             df_SARIMAX.set_index(future_index,inplace=True)
         except:
             pass
@@ -112,7 +112,7 @@ def UCM(df: pd.DataFrame):
                    #autoregressive= pUCM,
                    freq_seasonal=[{'period':12,'harmonics':12}]).fit()
       arr_forecast = fitUCM.forecast(fcperiod)#,exog = exog_fc)
-      df_UCM['UCM_'+sku] = arr_forecast
+      df_UCM['UCM_'+str(sku)] = arr_forecast
       df_UCM.set_index(future_index,inplace=True)
       
       return df_UCM

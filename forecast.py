@@ -5,6 +5,7 @@ import pmdarima as pmd
 import statsmodels.api as sm
 from datetime import datetime, date
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 ###################################
 from st_aggrid import AgGrid
@@ -166,24 +167,28 @@ df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
 #df = df.apply(pd.to_numeric)
 
-
+df_HW = pd.DataFrame())
+df_SARIMAX = pd.DataFrame()
+df_UCM = pd.DataFrame()
 if 'Holt-Winter' in model:
     df_HW = md.HoltWinter(df)
-    df = df.merge(df_HW,left_index=True,right_index=True,how='outer',indicator=True)
+    #df = df.merge(df_HW,left_index=True,right_index=True,how='outer',indicator=True)
 if 'SARIMAX' in model:
     df_SARIMAX = md.SARIMAX(df)
-    df = df.merge(df_SARIMAX,left_index=True,right_index=True,how='outer',indicator=True)
+    #df = df.merge(df_SARIMAX,left_index=True,right_index=True,how='outer',indicator=True)
 if 'UCM' in model:
     df_UCM = md.UCM(df)
-    df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
-
-
-df.drop(['_merge'],axis=1,inplace=True)
+    #df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
+df['Model'] = 'Actual'
+df = pd.concat([df,df_HW,df_SARIMAX,df_UCMM])
+#df.drop(['_merge'],axis=1,inplace=True)
 
 
 #df.sort_values(by=['Material','Date'],inplace=True)
-
-st.line_chart(df)
+dfplot = df.copy().reset_index
+fig = plt.figure(figsize=(16, 8))
+sns.lineplot(data=dfplot,x="Date", hue='Model)
+st.pyplot(fig)
     
     
 

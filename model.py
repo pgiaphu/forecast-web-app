@@ -29,7 +29,9 @@ def fc_length(n=12):
 
 #clean outlier
 def clean_outlier(df: pd.DataFrame):
-    #df = df.apply(pd.to_numeric)
+    if 'Model' in df.columns:
+      df.drop(['Model'],axis=1,inplace=True)
+    df = df.apply(pd.to_numeric)
     df = df.fillna(df.median())
     df = df[(np.abs(df.apply(zscore))<2.3)]
     df = df.fillna(df.median())
@@ -66,9 +68,10 @@ def HoltWinter(df: pd.DataFrame):
         #fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), initialization_method="heuristic",seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
         fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]),seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
         arr_forecast = fitHW.forecast(fcperiod)
-        df_HW['HW_'+str(sku)] = np.array(arr_forecast)
+        df_HW[sku] = arr_forecast
         df_HW.set_index(future_index,inplace=True)
     
+ df_HW['Model'] = 'Holt-Winter'
  return df_HW
  ############################################## 
 def SARIMAX(df: pd.DataFrame):
@@ -90,10 +93,11 @@ def SARIMAX(df: pd.DataFrame):
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         try:
             arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
-            df_SARIMAX['SARIMAX_'+str(sku)] = arr_forecast
+            df_SARIMAX[sku] = arr_forecast
             df_SARIMAX.set_index(future_index,inplace=True)
         except:
             pass
+    df_SARIMAX['Model'] = 'SARIMAX'
     return df_SARIMAX
 ############################################## 
 def UCM(df: pd.DataFrame):
@@ -113,10 +117,9 @@ def UCM(df: pd.DataFrame):
                    freq_seasonal=[{'period':12,'harmonics':12}]).fit()
             arr_forecast = fitUCM.forecast(fcperiod)#,exog = exog_fc)
             df_UCM[sku] = arr_forecast
-        df_UCM.set_index(future_index,inplace=True)
-        df_UCM['Model'] = 'UCM'
-        
-      
+            df_UCM.set_index(future_index,inplace=True)
+ 
+      df_UCM['Model'] = 'UCM'
       return df_UCM
 
      

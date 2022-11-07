@@ -181,11 +181,13 @@ if 'UCM' in model:
     #df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
 df['Model'] = 'Actual'
 df = pd.concat([df,df_HW,df_SARIMAX,df_UCM])
+st.write(df)
 #df.drop(['_merge'],axis=1,inplace=True)
 
 
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index
+st.write(dfplot)
 fig = plt.figure(figsize=(16, 8))
 sns.lineplot(data=dfplot,x="Date", hue='Model')
 st.pyplot(fig)

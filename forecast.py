@@ -162,7 +162,7 @@ df = pd.melt(df,id_vars=df.columns[0])
 df.rename({'variable': 'Date'}, axis=1, inplace=True)
 df['Date'] = df['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-%Y").date())
 st.write(df)
-df = pd.DataFrame(df.pivot('Date','Attribute','value'))
+df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
 #df = df.apply(pd.to_numeric)
 

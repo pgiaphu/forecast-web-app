@@ -186,7 +186,7 @@ st.write(df)
 
 
 #df.sort_values(by=['Material','Date'],inplace=True)
-dfplot = df.copy().reset_index
+dfplot = df.copy().reset_index()
 st.write(dfplot)
 fig = plt.figure(figsize=(16, 8))
 sns.lineplot(data=dfplot,x="index", hue='Model')

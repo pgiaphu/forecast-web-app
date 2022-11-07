@@ -167,7 +167,7 @@ df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
 #df = df.apply(pd.to_numeric)
 
-df_HW = pd.DataFrame())
+df_HW = pd.DataFrame()
 df_SARIMAX = pd.DataFrame()
 df_UCM = pd.DataFrame()
 if 'Holt-Winter' in model:

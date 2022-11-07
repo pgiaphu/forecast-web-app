@@ -189,7 +189,7 @@ st.write(df)
 dfplot = df.copy().reset_index
 st.write(dfplot)
 fig = plt.figure(figsize=(16, 8))
-sns.lineplot(data=dfplot,x="Date", hue='Model')
+sns.lineplot(data=dfplot,x="index", hue='Model')
 st.pyplot(fig)
     
     

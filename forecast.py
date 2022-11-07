@@ -187,7 +187,7 @@ df = pd.concat([df,df_HW,df_SARIMAX,df_UCMM])
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index
 fig = plt.figure(figsize=(16, 8))
-sns.lineplot(data=dfplot,x="Date", hue='Model)
+sns.lineplot(data=dfplot,x="Date", hue='Model')
 st.pyplot(fig)
     
     

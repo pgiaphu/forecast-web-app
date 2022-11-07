@@ -12,4 +12,5 @@ numpy
 statsmodels
 scipy
 matplotlib
+seaborn
 xlsxwriter

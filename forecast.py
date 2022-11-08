@@ -50,26 +50,11 @@ with st.sidebar:
     #####
     footer.footer()
     
-    #####
-
-     
+###################################
     if uploaded_file is not None:
-        shows = pd.read_excel(uploaded_file, sheet_name = "Sheet1")
+        shows = pd.read_excel(uploaded_file, sheet_name = "Full History")
         shows = shows.fillna(0)
- 
-        
-        #unpivot & pivot to WIDE-FORMAT
-        ###
-        #shows = pd.melt(shows, id_vars=shows.columns[0])
-        #shows["Date"] = shows["Date"].apply(lambda x: x.date())
-        #shows2 = shows.copy(deep=True)
-        #shows2["Date"] = shows2["Date"].apply(lambda x: x.strftime("%m-%Y"))
-        #shows = pd.pivot_table(shows, values="value",index="variable",columns="Date").reset_index()
-        #shows.rename({'variable': 'Material'}, axis=1, inplace=True)
-        #shows2 = pd.pivot_table(shows2, values="value",index="variable",columns="Date").reset_index()
-        #shows2.rename({'variable': 'Material'}, axis=1, inplace=True)
-        ###
-        
+        df_forecast = pd.read_excel(uploaded_file, sheet_name = "Forecast")
         
         st.info(
             f"""
@@ -91,7 +76,7 @@ with st.sidebar:
 
 
 st.subheader('2. Data loading 📋')
-st.write("Your data will show here.")
+st.write("Your baseline forecast will show here.")
 #st.write(shows)
 
 #########################################

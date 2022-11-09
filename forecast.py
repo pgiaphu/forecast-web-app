@@ -143,7 +143,7 @@ model = st.multiselect(
 
 
 df = pd.DataFrame(response["selected_rows"])
-st.write(response["selected_rows"])
+st.write(response["selected_rows"][0])
 st.write(df.iloc[0,df.columns.get_loc('Material')])
 df = df.drop(['Group','Description'], axis=1)
 df = pd.melt(df,id_vars=df.columns[0])

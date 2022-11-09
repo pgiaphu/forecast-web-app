@@ -54,7 +54,7 @@ with st.sidebar:
     if uploaded_file is not None:
         df_as = pd.read_excel(uploaded_file, sheet_name = "Full History")
         df_as = df_as.fillna(0)
-        df_forecast = pd.read_excel(uploaded_file, sheet_name = "Forecast")
+        df_fc = pd.read_excel(uploaded_file, sheet_name = "Forecast")
         
         st.info(
             f"""
@@ -81,16 +81,16 @@ st.write("Your baseline forecast will show here.")
 
 #########################################
 
-gb = GridOptionsBuilder.from_dataframe(df_as)
+gb = GridOptionsBuilder.from_dataframe(df_fc)
 #gb.configure_default_column(shows2.columns[0])
-gb.configure_column(df_as.columns[0], rowGroup=True)
+gb.configure_column(df_fc.columns[0], rowGroup=True)
 ###
 
 #gb.configure_column(shows2['Material'],headerCheckboxSelection=False)
 gb.configure_selection(selection_mode="single",use_checkbox=True)
 
 #gb.configure_side_bar()
-gb.configure_columns(df_as.columns.values.tolist(),headerCheckboxSelection=False, editable=True)
+gb.configure_columns(df_fc.columns.values.tolist(),headerCheckboxSelection=False, editable=True)
 js = JsCode("""
             function(e) {
                 let api = e.api;
@@ -119,7 +119,7 @@ st.markdown("""
 
 
 response = AgGrid(
-    shows,
+    df_fc,
     gridOptions=gridOptions,
     allow_unsafe_jscode=True, reload_data=False,
     enable_enterprise_modules=True,

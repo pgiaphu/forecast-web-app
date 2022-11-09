@@ -149,6 +149,7 @@ df_baseline.rename({'variable': 'Date'}, axis=1, inplace=True)
 df_baseline['Date'] = df_baseline['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-%Y").date())
 df_baseline = pd.DataFrame(df_baseline.pivot('Date','Material','value'))
 df_baseline.index = pd.to_datetime(df_baseline.index)
+df_baseline = df_baseline.apply(pd.to_numeric)
 
 
 

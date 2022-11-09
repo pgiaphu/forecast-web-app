@@ -142,11 +142,12 @@ model = st.multiselect(
 ['Holt-Winter'])
 
 
-df = pd.DataFrame(response["selected_rows"])
+df_baseline = pd.DataFrame(response["selected_rows"])
 #selected sku
 sku = response["selected_rows"][0]['Material']
 df =  df_as.iloc[:,:][df_as.Material == sku]
 st.write(df)
+st.write(df_baseline)
 df = df.drop(['Group','Description'], axis=1)
 df = pd.melt(df,id_vars=df.columns[0])
 df.rename({'variable': 'Date'}, axis=1, inplace=True)

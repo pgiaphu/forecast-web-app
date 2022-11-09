@@ -143,13 +143,14 @@ model = st.multiselect(
 
 
 df = pd.DataFrame(response["selected_rows"])
-st.write(response["selected_rows"][0]['Material'])
-st.write(df.iloc[0,df.columns.get_loc('Material')])
+#selected sku
+sku = response["selected_rows"][0]['Material']
+df =  df_as.iloc[:,:][df_as.Material == sku]
+st.write(df)
 df = df.drop(['Group','Description'], axis=1)
 df = pd.melt(df,id_vars=df.columns[0])
 df.rename({'variable': 'Date'}, axis=1, inplace=True)
 df['Date'] = df['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-%Y").date())
-st.write(df.iloc[0,df.columns.get_loc('Material')])
 df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
 #df = df.apply(pd.to_numeric)

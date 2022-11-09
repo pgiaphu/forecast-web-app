@@ -178,7 +178,8 @@ if 'UCM' in model:
     df_UCM = md.UCM(df)
     #df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
 df['Model'] = 'Actual'
-df = pd.concat([df,df_HW,df_SARIMAX,df_UCM])
+df_baseline['Model'] = 'Baseline'
+df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
 st.write(df)
 #df.drop(['_merge'],axis=1,inplace=True)
 

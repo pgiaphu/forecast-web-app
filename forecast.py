@@ -143,11 +143,18 @@ model = st.multiselect(
 
 
 df_baseline = pd.DataFrame(response["selected_rows"])
+df_baseline = df_baseline.drop(['Group','Description'], axis=1)
+df_baseline = pd.melt(df_baseline,id_vars=df_baseline.columns[0])
+df_baseline.rename({'variable': 'Date'}, axis=1, inplace=True)
+df_baseline['Date'] = df_baseline['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-%Y").date())
+df_baseline = pd.DataFrame(df_baseline.pivot('Date','Material','value'))
+df_baseline.index = pd.to_datetime(df_baseline.index)
+
+
+
 #selected sku
 sku = response["selected_rows"][0]['Material']
 df =  df_as.iloc[:,:][df_as.Material == sku]
-st.write(df)
-st.write(df_baseline)
 df = df.drop(['Group','Description'], axis=1)
 df = pd.melt(df,id_vars=df.columns[0])
 df.rename({'variable': 'Date'}, axis=1, inplace=True)
@@ -155,6 +162,8 @@ df['Date'] = df['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-
 df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
 #df = df.apply(pd.to_numeric)
+st.write(df)
+st.write(df_baseline)
 
 df_HW = pd.DataFrame()
 df_SARIMAX = pd.DataFrame()

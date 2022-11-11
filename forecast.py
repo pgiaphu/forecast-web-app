@@ -163,8 +163,6 @@ df['Date'] = df['Date'].apply(lambda x: datetime.strptime("{}".format(x),"%d-%m-
 df = pd.DataFrame(df.pivot('Date','Material','value'))
 df.index = pd.to_datetime(df.index)
 #df = df.apply(pd.to_numeric)
-st.write(df)
-st.write(df_baseline)
 
 df_HW = pd.DataFrame()
 df_SARIMAX = pd.DataFrame()
@@ -181,14 +179,13 @@ if 'UCM' in model:
 df['Model'] = 'Actual'
 df_baseline['Model'] = 'Baseline'
 df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
-st.write(df)
 #df.drop(['_merge'],axis=1,inplace=True)
 
 
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index()
-st.write(dfplot)
 fig = plt.figure(figsize=(16, 8))
+sns.set_theme(style="whitegrid", palette="pastel")
 sns.lineplot(data=dfplot,x="Date", y=dfplot.columns[1],hue='Model')
 st.pyplot(fig)
     

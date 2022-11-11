@@ -191,6 +191,7 @@ fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(8, 4))
 sns.set_theme(style="whitegrid", palette="pastel")
 sns.lineplot(data=dfplot,x="Date", y=dfplot.columns[1],hue='Model',ax=ax[0])
 month_plot(dfplot.iloc[:,:][dfplot.Model == 'Actual'].columns[1],dfplot.Date,ax=ax[1])
+plt.ylim(0,2000)
 st.pyplot(fig)
     
     

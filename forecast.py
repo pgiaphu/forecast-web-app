@@ -189,7 +189,7 @@ dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(16, 8))
 sns.set_theme(style="whitegrid", palette="pastel")
 sns.lineplot(data=dfplot,x="Date", y=dfplot.columns[1],hue='Model',ax=ax[0])
-month_plot(y=dfplot.columns[1],ax=ax[1])
+month_plot(dfplot.columns[1],ax=ax[1])
 st.pyplot(fig)
     
     

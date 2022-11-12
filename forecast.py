@@ -189,11 +189,11 @@ df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
 
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index()
-dfplotmonth = dfplot.iloc[:,:][dfplot.Model == 'Actual'][sku,'Date']
+dfplotmonth = dfplot.iloc[:,:][dfplot.Model == 'Actual'][[sku,'Date']]
 st.write(dfplotmonth)
 
 #dfplot.index = pd.to_datetime(dfplot.Date)
-fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(8, 4))
+fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(16, 8))
 sns.set_theme(style="whitegrid", palette="pastel")
 sns.lineplot(data=dfplot,x="Date", y=dfplot.columns[1],hue='Model',ax=ax[0])
 month_plot(dfplot.iloc[:,:][dfplot.Model == 'Actual'][sku],dfplot.iloc[:,:][dfplot.Model == 'Actual']['Date'],ax=ax[1])

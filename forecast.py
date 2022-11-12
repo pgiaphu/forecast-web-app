@@ -190,7 +190,7 @@ df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index()
 #dfplotmonth = dfplot.iloc[:,:][dfplot.Model == 'Actual'][sku]
-#st.write(dfplot)
+st.write(dfplot.iloc[:,:][dfplot.Model == 'Actual'][sku])
 
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(8, 4))

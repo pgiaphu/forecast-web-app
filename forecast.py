@@ -190,6 +190,7 @@ df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index()
 dfplotmonth = dfplot.iloc[:,:][dfplot.Model == 'Actual'][[sku,'Date']]
+dfplotmonth.index = pd.DatetimeIndex(dfplotmonth.Date, freq='MS')
 st.write(dfplotmonth)
 
 #dfplot.index = pd.to_datetime(dfplot.Date)

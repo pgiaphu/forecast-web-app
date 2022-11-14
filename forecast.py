@@ -195,7 +195,7 @@ dfplot
 st.write(dfplotmonth)
 
 with st.container():
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(1,1,5)
     with col1:
         if st.button('Line chart'):
             st.write('Line chart')

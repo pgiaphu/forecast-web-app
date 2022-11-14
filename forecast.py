@@ -194,6 +194,18 @@ dfplotmonth.index = pd.DatetimeIndex(dfplotmonth.Date, freq='MS')
 dfplot
 st.write(dfplotmonth)
 
+with st.container():
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button('Line chart'):
+            st.write('Line chart')
+        else:
+            st.write('Line chart')
+    with col2:
+        if st.button('Say hello'):
+            st.write('Why hello there')
+        else:
+            st.write('Goodbye')
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(16, 8))
 sns.set_theme(style="whitegrid", palette="pastel")

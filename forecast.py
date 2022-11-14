@@ -189,30 +189,24 @@ df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
 
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index()
-dfplotmonth = dfplot.iloc[:,:][dfplot.Model == 'Actual'][[sku,'Date']]
-dfplotmonth.index = pd.DatetimeIndex(dfplotmonth.Date, freq='MS')
-dfplot
-st.write(dfplotmonth)
+#dfplotmonth = dfplot.iloc[:,:][dfplot.Model == 'Actual'][[sku,'Model','Date']]
+df.index = pd.DatetimeIndex(dfplot.Date, freq='MS')
+st.write(dfplot)
 
-with st.container():
-    col1, col2, col3 = st.columns([1,1,5])
-    with col1:
-        if st.button('Line chart'):
-            st.write('Line chart')
-        else:
-            st.write('Line chart')
-    with col2:
-        if st.button('Say hello'):
-            st.write('Why hello there')
-        else:
-            st.write('Goodbye')
+
+col1, col2, col3 = st.columns([1,1,7])
+with col1:
+    if st.button('Trend chart'):
+        plot_type = 'trend'
+with col2:
+    if st.button('Multiple line chart'):
+        plot_type = 'multipleline'
+
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(16, 8))
 sns.set_theme(style="whitegrid", palette="pastel")
 sns.lineplot(data=dfplot,x="Date", y=dfplot.columns[1],hue='Model',ax=ax[0])
-month_plot(dfplotmonth[sku],ax=ax[1])
-
-#plt.ylim(0,2000)
+month_plot(dfplot.iloc[:,:][dfplot.Model == 'Actual'][sku],ax=ax[1])
 st.pyplot(fig)
     
     

@@ -206,9 +206,9 @@ with col2:
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(16, 8))
 sns.set_theme(style="whitegrid", palette="pastel")
-if plot_type = 'trend':
+if plot_type == 'trend':
     sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0]) 
-elif plot_type = 'multipleline':
+elif plot_type == 'multipleline':
     sns.lineplot(data=df,x=df.index.month, y=df[sku],hue=df.index.year,style='Model',ax=ax[0]) 
 
 month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax[1])

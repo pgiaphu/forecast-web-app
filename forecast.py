@@ -195,7 +195,7 @@ st.write(dfplot)
 st.write(dfplot)
 
 
-col1, col2, col3 = st.columns([1,1,7])
+col1, col2, col3 = st.columns([1,1,6])
 with col1:
     if st.button('Trend chart'):
         plot_type = 'trend'
@@ -206,7 +206,11 @@ with col2:
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(16, 8))
 sns.set_theme(style="whitegrid", palette="pastel")
-sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0])
+if plot_type = 'trend':
+    sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0]) 
+elif plot_type = 'multipleline':
+    sns.lineplot(data=df,x=df.index.month, y=df[sku],hue=df.index.year,style='Model',ax=ax[0]) 
+
 month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax[1])
 st.pyplot(fig)
     

@@ -186,7 +186,7 @@ df_baseline['Model'] = 'Baseline'
 df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
 #df.drop(['_merge'],axis=1,inplace=True)
 
-
+st.write(df)
 #df.sort_values(by=['Material','Date'],inplace=True)
 dfplot = df.copy().reset_index()
 st.write(dfplot)

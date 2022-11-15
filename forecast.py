@@ -209,7 +209,7 @@ sns.set_theme(style="whitegrid", palette="pastel")
 if plot_type == 'trend':
     sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0]) 
 elif plot_type == 'multipleline':
-    sns.lineplot(data=df,x=df.index.month, y=df[sku],hue=df.index.year,style='Model',ax=ax[0]) 
+    sns.lineplot(data=df,x=df.index.month, y=df[sku],hue=df.index.year,style='Model',palette="Blues",ax=ax[0]) 
 
 month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax[1])
 st.pyplot(fig)

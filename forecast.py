@@ -202,10 +202,10 @@ with col2:
 fig, ax = plt.subplots(figsize=(16,8))
 sns.set_theme(style="white", palette="pastel")
 if plot_type == 'trend':
-    ax.set_facecolor('#E6E6E6')
     ax = sns.lineplot(data=df,x=df.index,
                       y=df[sku],hue='Model',
                       markers=True)
+    ax.grid(False)
                      
 elif plot_type == 'multipleline':
     ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],

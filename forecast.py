@@ -211,7 +211,7 @@ elif plot_type == 'multipleline':
                  style='Model',palette="Blues")
     #ax2 = ax.twiny()
     
-    ax = sns.barplot(data=df.iloc[:,:][df.Model != 'Actual'],
+    ax = sns.factorplot(data=df.iloc[:,:][df.Model != 'Actual'],
                  x='Month',
                  y=sku,
                  hue='Year',

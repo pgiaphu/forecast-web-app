@@ -11,7 +11,7 @@ from statsmodels.graphics.tsaplots import month_plot,quarter_plot
 
 ###################################
 from st_aggrid import AgGrid
-from st_aggrid.grid_options_builder import GridOptionsBuilder, ColumnsAutoSizeMode
+from st_aggrid.grid_options_builder import GridOptionsBuilder
 from st_aggrid.shared import JsCode
 from st_aggrid import GridUpdateMode, DataReturnMode
 

@@ -195,7 +195,7 @@ with col1:
 with col2:
     if st.button('Multiple line chart'):
         plot_type = 'multipleline'
-st.write(data=df.iloc[:,:][df.Model == 'Actual'])
+st.write(df.iloc[:,:][df.Model == 'Actual'])
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(figsize=(16,8))
 sns.set_theme(style="whitegrid", palette="pastel")
@@ -208,7 +208,7 @@ elif plot_type == 'multipleline':
     #             hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
     #             style='Model',palette="Blues")
     #ax2 = ax.twiny()
-    st.write(data=df.iloc[:,:][df.Model == 'Actual'])
+    
     ax = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
                 x=df.iloc[:,:][df.Model == 'Actual'].index.month,
                 y=df.iloc[:,:][df.Model == 'Actual'][sku],

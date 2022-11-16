@@ -202,13 +202,13 @@ sns.set_theme(style="whitegrid", palette="pastel")
 if plot_type == 'trend':
     ax = sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model') 
 elif plot_type == 'multipleline':
-    ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
-                 x=df.iloc[:,:][df.Model != 'Actual'].index.month,
-                 y=df.iloc[:,:][df.Model != 'Actual'][sku],
-                 hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
-                 style='Model',palette="Blues")
-    ax2 = ax.twiny()
-    ax2 = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
+    #ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
+    #             x=df.iloc[:,:][df.Model != 'Actual'].index.month,
+    #             y=df.iloc[:,:][df.Model != 'Actual'][sku],
+    #             hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
+    #             style='Model',palette="Blues")
+    #ax2 = ax.twiny()
+    ax = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
                 x=df.iloc[:,:][df.Model == 'Actual'].index.month,
                 y=df.iloc[:,:][df.Model == 'Actual'][sku],
                 hue=df.iloc[:,:][df.Model == 'Actual'].index.year,

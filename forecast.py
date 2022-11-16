@@ -209,11 +209,11 @@ elif plot_type == 'multipleline':
                  style='Model',palette="Blues")
     #ax2 = ax.twiny()
     
-    #ax = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
-    #            x=df.iloc[:,:][df.Model == 'Actual'].index.month,
-    #            y=df.iloc[:,:][df.Model == 'Actual'][sku],
-    #            hue=df.iloc[:,:][df.Model == 'Actual'].index.year,
-    #            )
+    ax = sns.barplot(data=df.iloc[:,:][df.Model != 'Actual'],
+                 x=df.iloc[:,:][df.Model != 'Actual'].index.month,
+                 y=df.iloc[:,:][df.Model != 'Actual'][sku],
+                 hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
+                 style='Model',palette="Blues")
 
 st.pyplot(fig)
 

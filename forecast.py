@@ -212,7 +212,7 @@ elif plot_type == 'multipleline':
                  x='Month',
                  y=sku,
                  hue='Year',
-                 palette='tab:blue'
+                 palette='Blues'
                  )
           
     ax2 = ax.twiny()  

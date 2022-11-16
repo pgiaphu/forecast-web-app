@@ -58,7 +58,6 @@ with st.sidebar:
         df_as = df_as.fillna(0)
         df_fc = pd.read_excel(uploaded_file, sheet_name = "Forecast")
         df_fc = df_fc.drop(['Channel','Customer','Customer Name'], axis=1)
-        df_fc = df_fc.apply(pd.to_numeric)
         df_fc.loc[:, ~df_fc.columns.isin(['Channel', 'Customer','Customer Name','Group','Material','Description'])] = df_fc.loc[:, ~df_fc.columns.isin(['Channel', 'Customer','Customer Name','Group','Material','Description'])].apply(np.ceil)
         
         

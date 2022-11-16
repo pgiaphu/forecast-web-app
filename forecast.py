@@ -208,19 +208,19 @@ if plot_type == 'trend':
     ax.grid(False)
                      
 elif plot_type == 'multipleline':
-    ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
+    ax = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
                  x='Month',
                  y=sku,
                  hue='Year',
-                 style='Model',palette='Reds')
-    ax2 = ax.twiny()
-    
-    ax2 = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
-                 x='Month',
-                 y=sku,
-                 hue='Year',
-                 palette="Blues"
+                 palette='tab:blue'
                  )
+          
+    ax2 = ax.twiny()  
+    ax2 = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
+                 x='Month',
+                 y=sku,
+                 hue='Year',
+                 style='Model',palette='tab10')
 
 st.pyplot(fig)
 

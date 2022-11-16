@@ -200,7 +200,7 @@ with col2:
 
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(figsize=(16,8))
-sns.set_theme(style="white", palette="pastel")
+sns.set_theme(style="white")
 if plot_type == 'trend':
     ax = sns.lineplot(data=df,x=df.index,
                       y=df[sku],hue='Model',
@@ -220,7 +220,7 @@ elif plot_type == 'multipleline':
                  x='Month',
                  y=sku,
                  hue='Year',
-                 style='Model',palette='tab10')
+                 style='Model',palette='tab:red')
 
 st.pyplot(fig)
 

@@ -200,31 +200,35 @@ with col2:
     if st.button('Multiple line chart'):
         plot_type = 'multipleline'
 
-#dfplot.index = pd.to_datetime(dfplot.Date)
-fig, ax = plt.subplots(figsize=(16,8))
-sns.set_theme(style="white")
-if plot_type == 'trend':
-    ax = sns.lineplot(data=df,x=df.index,
-                      y=df[sku],hue='Model',
-                      style='Model',palette='tab10',markers='o')
-    ax.grid(False)
-                     
-elif plot_type == 'multipleline':
-    ax = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
-                 x='Month',
-                 y=sku,
-                 hue='Year',
-                 palette='Blues'
-                 )
-          
-    ax2 = ax.twiny()  
-    ax2 = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
-                 x='Month',
-                 y=sku,
-                 hue='Year',
-                 style='Model',palette=sns.dark_palette('red'))
+col1, col2 = st.columns([2,8])
+with col1:
+    alpha = st.slider('alpha', 0, 1, 0.25)
+with col2:
+    fig, ax = plt.subplots(figsize=(16,8))
+    sns.set_theme(style="white")
+    if plot_type == 'trend':
+        ax = sns.lineplot(data=df,x=df.index,
+                          y=df[sku],hue='Model',
+                          style='Model',palette='tab10',markers='o')
+        ax.grid(False)
 
-st.pyplot(fig)
+    elif plot_type == 'multipleline':
+        ax = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
+                     x='Month',
+                     y=sku,
+                     hue='Year',
+                     palette='Blues'
+                     )
+
+        ax2 = ax.twiny()  
+        ax2 = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
+                     x='Month',
+                     y=sku,
+                     hue='Year',
+                     style='Model',palette=sns.dark_palette('red'))
+    st.pyplot(fig)
+
+
 
 fig1, ax1 = plt.subplots(figsize=(16,8))
 month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax1)

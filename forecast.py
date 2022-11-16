@@ -209,9 +209,9 @@ elif plot_type == 'multipleline':
                  y=sku,
                  hue='Year',
                  style='Model',palette='Reds')
-    #ax2 = ax.twiny()
+    ax2 = ax.twiny()
     
-    ax = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
+    ax2 = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
                  x='Month',
                  y=sku,
                  hue='Year',

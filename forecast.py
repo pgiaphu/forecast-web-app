@@ -195,7 +195,7 @@ with col1:
 with col2:
     if st.button('Multiple line chart'):
         plot_type = 'multipleline'
-
+st.write(data=df.iloc[:,:][df.Model == 'Actual'])
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(figsize=(16,8))
 sns.set_theme(style="whitegrid", palette="pastel")
@@ -214,7 +214,7 @@ elif plot_type == 'multipleline':
                 y=df.iloc[:,:][df.Model == 'Actual'][sku],
                 hue=df.iloc[:,:][df.Model == 'Actual'].index.year,
                 )
-plt.show()
+
 st.pyplot(fig)
 
 fig1, ax1 = plt.subplots(figsize=(16,8))

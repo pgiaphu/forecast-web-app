@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 from prophet import Prophet
 import pmdarima as pmd
 import statsmodels.api as sm

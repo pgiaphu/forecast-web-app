@@ -204,7 +204,7 @@ sns.set_theme(style="white", palette="pastel")
 if plot_type == 'trend':
     ax.set_facecolor('#E6E6E6')
     ax = sns.lineplot(data=df,x=df.index,
-                      y=df[sku],hue='Model'
+                      y=df[sku],hue='Model',
                       markers=True)
                      
 elif plot_type == 'multipleline':

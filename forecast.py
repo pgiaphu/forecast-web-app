@@ -197,25 +197,28 @@ with col2:
         plot_type = 'multipleline'
 
 #dfplot.index = pd.to_datetime(dfplot.Date)
-fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(16, 8))
+fig, ax = plt.subplots(figsize=(16,8))
 sns.set_theme(style="whitegrid", palette="pastel")
 if plot_type == 'trend':
     sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0]) 
 elif plot_type == 'multipleline':
-    sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
+    ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
                  x=df.iloc[:,:][df.Model != 'Actual'].index.month,
                  y=df.iloc[:,:][df.Model != 'Actual'][sku],
                  hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
-                 style='Model',palette="Blues",ax=ax[0])
-    ax2 = ax[0].twiny()
-    sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
+                 style='Model',palette="Blues")
+    ax2 = ax1.twiny()
+    ax2 = sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
                 x=df.iloc[:,:][df.Model == 'Actual'].index.month,
                 y=df.iloc[:,:][df.Model == 'Actual'][sku],
                 hue=df.iloc[:,:][df.Model == 'Actual'].index.year,
-                ax=ax2)
-
-month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax[1])
+                )
+plt.show()
 st.pyplot(fig)
+
+fig1, ax1 = plt.subplots(figsize=(16,8))
+month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax1)
+st.pyplot(fig1)
     
     
 

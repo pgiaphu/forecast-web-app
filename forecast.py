@@ -16,7 +16,6 @@ from st_aggrid import GridUpdateMode, DataReturnMode
 
 ###################################
 import model as md
-from functionforDownloadButtons import download_button
 import footer as footer
 ###################################
 
@@ -203,9 +202,17 @@ sns.set_theme(style="whitegrid", palette="pastel")
 if plot_type == 'trend':
     sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0]) 
 elif plot_type == 'multipleline':
-    sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],x=df.index.month, y=df[sku],hue=df.index.year,style='Model',palette="Blues",ax=ax[0])
+    sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
+                 x=df.iloc[:,:][df.Model != 'Actual'].index.month,
+                 y=df.iloc[:,:][df.Model != 'Actual'][sku],
+                 hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
+                 style='Model',palette="Blues",ax=ax[0])
     ax[2] = ax[0].twiny()
-    sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'], x=df.index.month, y=df[sku], hue=df.index.year,ax=ax[2])
+    sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'],
+                x=df.iloc[:,:][df.Model == 'Actual'].index.month,
+                y=df.iloc[:,:][df.Model == 'Actual'][sku],
+                hue=df.iloc[:,:][df.Model == 'Actual'].index.year,
+                ax=ax[2])
 
 month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax[1])
 st.pyplot(fig)

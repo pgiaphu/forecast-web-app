@@ -33,7 +33,7 @@ def clean_outlier(df: pd.DataFrame):
       df.drop(['Model'],axis=1,inplace=True)
     df = df.apply(pd.to_numeric)
     df = df.fillna(df.median())
-    df = df[(np.abs(df.apply(zscore))<2.3)]
+    df = df[(np.abs(df.apply(zscore))<2.4)]
     df = df.fillna(df.median())
     return df
    
@@ -55,7 +55,7 @@ df_param = pd.DataFrame(data={'Model': ['SES','Holt-Winter','SARIMAX','UCM']})
 
 
 ############################################## 
-def HoltWinter(df: pd.DataFrame):
+def HoltWinter(df: pd.DataFrame, alpha: float, beta: float, gamma: float):
  df = clean_outlier(df)
  fcperiod = fc_length()
  df_HW = pd.DataFrame()
@@ -64,9 +64,10 @@ def HoltWinter(df: pd.DataFrame):
 
  for sku in df.columns:
         
-        
-        #fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), initialization_method="heuristic",seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
-        fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]),seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
+        try:
+         fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), initialization_method="heuristic",seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
+        except:
+         fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]),seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
         arr_forecast = fitHW.forecast(fcperiod)
         df_HW[sku] = arr_forecast
         df_HW.set_index(future_index,inplace=True)

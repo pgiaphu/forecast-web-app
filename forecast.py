@@ -190,19 +190,23 @@ plot_type = 'trend'
 df['Month'] = df.index.month
 df['Year'] = df.index.year
 
-col1, col2, col3 = st.columns([1,1,6])
+col1, col2, col3 = st.columns([1,1,5])
 with col1:
     if st.button('Trend chart'):
         plot_type = 'trend'
 with col2:
     if st.button('Multiple line chart'):
         plot_type = 'multipleline'
-st.write(df)
+
 #dfplot.index = pd.to_datetime(dfplot.Date)
 fig, ax = plt.subplots(figsize=(16,8))
-sns.set_theme(style="whitegrid", palette="pastel")
+sns.set_theme(style="white", palette="pastel")
 if plot_type == 'trend':
-    ax = sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model') 
+    ax.set_facecolor('#E6E6E6')
+    ax = sns.lineplot(data=df,x=df.index,
+                      y=df[sku],hue='Model'
+                      markers=True)
+                     
 elif plot_type == 'multipleline':
     ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
                  x='Month',

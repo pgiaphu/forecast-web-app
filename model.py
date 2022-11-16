@@ -50,7 +50,7 @@ def exog_var(df: pd.DataFrame):
 
 #create list of forecast date
 
-df_P = pd.DataFrame()
+df_param = pd.DataFrame(data={'Model': ['SES','Holt-Winter','SARIMAX','UCM']})
 
 
 
@@ -121,9 +121,6 @@ def UCM(df: pd.DataFrame):
  
       df_UCM['Model'] = 'UCM'
       return df_UCM
-
-     
- #https://pablocfonseca-streamlit-aggrid-examples-example-jyosi3.streamlit.app/
     
     
     

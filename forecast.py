@@ -215,7 +215,7 @@ elif plot_type == 'multipleline':
                  x='Month',
                  y=sku,
                  hue='Year',
-                 style='Model',palette="Blues")
+                 )
 
 st.pyplot(fig)
 

@@ -203,8 +203,10 @@ with col2:
 col1, col2 = st.columns([2,8])
 with col1:
     alpha = st.slider('alpha', 0.00, 1.00, 0.25)
+    beta = st.slider('alpha', 0.00, 1.00, 0.25)
+    gamma = st.slider('alpha', 0.00, 1.00, 0.25)
 with col2:
-    fig, ax = plt.subplots(figsize=(16,8))
+    fig, ax = plt.subplots(figsize=(8,4))
     sns.set_theme(style="white")
     if plot_type == 'trend':
         ax = sns.lineplot(data=df,x=df.index,

@@ -204,7 +204,7 @@ if plot_type == 'trend':
     sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0]) 
 elif plot_type == 'multipleline':
     sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],x=df.index.month, y=df[sku],hue=df.index.year,style='Model',palette="Blues",ax=ax[0])
-    ax[2] = ax[0].twinx()
+    ax[2] = ax[0].twiny()
     sns.barplot(data=df.iloc[:,:][df.Model == 'Actual'], x=df.index.month, y=df[sku], hue=df.index.year,ax=ax[2])
 
 month_plot(df.iloc[:,:][df.Model == 'Actual'][sku],ax=ax[1])

@@ -10,7 +10,7 @@ import seaborn as sns
 from statsmodels.graphics.tsaplots import month_plot,quarter_plot
 
 ###################################
-from st_aggrid import AgGrid
+from st_aggrid import AgGrid, ColumnsAutoSizeMode
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 from st_aggrid.shared import JsCode
 from st_aggrid import GridUpdateMode, DataReturnMode
@@ -132,7 +132,7 @@ response = AgGrid(
     update_mode=GridUpdateMode.MODEL_CHANGED,
     data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
     fit_columns_on_grid_load=False,
-)
+    columns_auto_size_mode=ColumnsAutoSizeMode.FIT_CONTENTS)
 
 
 

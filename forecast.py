@@ -200,7 +200,7 @@ with col2:
 fig, ax = plt.subplots(figsize=(16,8))
 sns.set_theme(style="whitegrid", palette="pastel")
 if plot_type == 'trend':
-    sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model',ax=ax[0]) 
+    ax = sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model') 
 elif plot_type == 'multipleline':
     ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
                  x=df.iloc[:,:][df.Model != 'Actual'].index.month,

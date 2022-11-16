@@ -204,7 +204,7 @@ sns.set_theme(style="white", palette="pastel")
 if plot_type == 'trend':
     ax = sns.lineplot(data=df,x=df.index,
                       y=df[sku],hue='Model',
-                      style='Month',markers='o')
+                      style='Model',markers='o')
     ax.grid(False)
                      
 elif plot_type == 'multipleline':

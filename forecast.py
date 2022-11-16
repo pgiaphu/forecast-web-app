@@ -205,16 +205,16 @@ if plot_type == 'trend':
     ax = sns.lineplot(data=df,x=df.index, y=df[sku],hue='Model') 
 elif plot_type == 'multipleline':
     ax = sns.lineplot(data=df.iloc[:,:][df.Model != 'Actual'],
-                 x=df.iloc[:,:][df.Model != 'Actual'].index.month,
-                 y=df.iloc[:,:][df.Model != 'Actual'][sku],
-                 hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
+                 x='Month',
+                 y=sku,
+                 hue='Year',
                  style='Model',palette="Blues")
     #ax2 = ax.twiny()
     
     ax = sns.barplot(data=df.iloc[:,:][df.Model != 'Actual'],
-                 x=df.iloc[:,:][df.Model != 'Actual'].index.month,
-                 y=df.iloc[:,:][df.Model != 'Actual'][sku],
-                 hue=df.iloc[:,:][df.Model != 'Actual'].index.year,
+                 x='Month',
+                 y=sku,
+                 hue='Year',
                  style='Model',palette="Blues")
 
 st.pyplot(fig)

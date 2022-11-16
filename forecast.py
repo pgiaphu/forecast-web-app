@@ -202,7 +202,7 @@ with col2:
 
 col1, col2 = st.columns([2,8])
 with col1:
-    alpha = st.slider('alpha', 0, 1, 0.25)
+    alpha = st.slider('alpha', 0.00, 1.00, 0.25)
 with col2:
     fig, ax = plt.subplots(figsize=(16,8))
     sns.set_theme(style="white")

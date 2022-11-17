@@ -146,7 +146,7 @@ model =  st.radio(
             "Choose your forecast model 👇",
             ['UCM', 'SARIMAX', 'Prophet', 'Holt-Winter'],
             key="Holt-Winter",
-            label_visibility=visible,
+            label_visibility='visible',
             horizontal=True)
 
 

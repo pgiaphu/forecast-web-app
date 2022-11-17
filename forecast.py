@@ -214,10 +214,6 @@ with col1:
                 label_visibility='collapsed',
                 disabled=False,
                 horizontal=True)
-    if st.button('Auto'):
-        select_type = 'Auto' 
-    if st.button('Manual'):
-        select_type = 'Manual'
  
     if 'Holt-Winter' in model:
         if select_type == 'Manual':

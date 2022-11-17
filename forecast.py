@@ -214,21 +214,19 @@ with col1:
                 label_visibility='collapsed',
                 disabled=False,
                 horizontal=True)
-    with col3:
-        if st.button('Auto'):
-            select_type = 'auto'
-    with col4:
-        if st.button('Manual'):
-            select_type = 'manual'
+    if st.button('Auto'):
+        select_type = 'Auto' 
+    if st.button('Manual'):
+        select_type = 'Manual'
  
     if 'Holt-Winter' in model:
-        if select_type == 'manual':
+        if select_type == 'Manual':
             alpha = st.slider('alpha', 0.00, 1.00, 0.25)
             beta = st.slider('beta', 0.00, 1.00, 0.25)
             gamma = st.slider('gamma', 0.00, 1.00, 0.25)
             df_HW = md.HoltWinter(df,alpha,beta,gamma)
-        else:
-            df_HW = md.HoltWinter(df)
+    else:
+        df_HW = md.HoltWinter(df)
 df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])  
 
 with col2:

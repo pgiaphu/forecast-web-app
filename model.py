@@ -88,7 +88,7 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
     future_index.append(df.tail(12).index.shift(12,freq="MS"))
     
     for sku in df.columns:
-     if p+q+d+P+Q+D == 0:
+        if p+q+d+P+Q+D == 0:
               ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
                                          start_p=0, max_p=12,
                                          d=1, max_d=2,
@@ -98,7 +98,7 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
                                          D=1,max_D=2,
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
-      else:
+        else:
                ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
                                          start_p=p, max_p=p,
                                          d=d, max_d=d,

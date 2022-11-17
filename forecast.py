@@ -221,8 +221,8 @@ with col1:
             beta = st.slider('beta', 0.00, 1.00, 0.25)
             gamma = st.slider('gamma', 0.00, 1.00, 0.25)
             df_HW = md.HoltWinter(df,alpha,beta,gamma)
-    else:
-        df_HW = md.HoltWinter(df)
+        else:
+            df_HW = md.HoltWinter(df)
 df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])  
 
 with col2:

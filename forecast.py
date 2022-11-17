@@ -142,10 +142,14 @@ response = AgGrid(
 
 st.subheader('3. Forecast')
 
-model = st.multiselect(
-'Choose your forecast model',
-['UCM', 'SARIMAX', 'Prophet', 'Holt-Winter'],
-['Holt-Winter'])
+model =  st.radio(
+            "Choose your forecast model 👇",
+            ['UCM', 'SARIMAX', 'Prophet', 'Holt-Winter'],
+            key="Holt-Winter",
+            label_visibility=True,
+            horizontal=True)
+
+
 
 
 df_baseline = pd.DataFrame(response["selected_rows"])

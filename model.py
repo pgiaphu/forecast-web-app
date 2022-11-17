@@ -80,7 +80,7 @@ def HoltWinter(df: pd.DataFrame,alpha=1,beta=1,gamma=1):
  df_HW['Model'] = 'Holt-Winter'
  return df_HW
  ############################################## 
-def SARIMAX(df: pd.DataFrame):
+def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
     df = clean_outlier(df)
     fcperiod = fc_length()
     df_SARIMAX = pd.DataFrame()
@@ -88,7 +88,8 @@ def SARIMAX(df: pd.DataFrame):
     future_index.append(df.tail(12).index.shift(12,freq="MS"))
     
     for sku in df.columns:
-        ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
+     if p+q+d+P+Q+D == 0:
+              ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
                                          start_p=0, max_p=12,
                                          d=1, max_d=2,
                                          start_q=0, max_q=12,
@@ -97,12 +98,21 @@ def SARIMAX(df: pd.DataFrame):
                                          D=1,max_D=2,
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
-        try:
-            arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
-            df_SARIMAX[sku] = arr_forecast
-            df_SARIMAX.set_index(future_index,inplace=True)
-        except:
-            pass
+      else:
+               ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
+                                         start_p=p, max_p=p,
+                                         d=d, max_d=d,
+                                         start_q=q, max_q=q,
+                                         start_P=P, max_P=P,
+                                         start_Q=Q, max_Q=Q,
+                                         D=D,max_D=D,
+                                         m=12,seasonal=True,
+                                         error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
+        
+      arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
+      df_SARIMAX[sku] = arr_forecast
+      
+    df_SARIMAX.set_index(future_index,inplace=True)
     df_SARIMAX['Model'] = 'SARIMAX'
     return df_SARIMAX
 ############################################## 

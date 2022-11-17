@@ -188,7 +188,7 @@ if 'UCM' in model:
 df['Model'] = 'Actual'
 df_baseline['Model'] = 'Baseline'
 
-#df.drop(['_merge'],axis=1,inplace=True)
+st.write(df)
 
 plot_type = 'trend'
 

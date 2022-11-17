@@ -185,16 +185,14 @@ if 'SARIMAX' in model:
 if 'UCM' in model:
     df_UCM = md.UCM(df)
     #df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
-df['Model'] = 'Actual'
+
 df_baseline['Model'] = 'Baseline'
 
-st.write(df)
+
 
 plot_type = 'trend'
 
-df['Month'] = df.index.month
-df['Year'] = df.index.year
-st.write(df)
+
 
 col1, col2, col3 = st.columns([1,1,5])
 with col1:
@@ -224,10 +222,12 @@ with col1:
             df_HW = md.HoltWinter(df,alpha,beta,gamma)
         else:
             df_HW = md.HoltWinter(df)
-    st.write(df)
-    st.write(df_HW)
+
+    df['Model'] = 'Actual'
+    df['Month'] = df.index.month
+    df['Year'] = df.index.year
     df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
-    st.write(df)
+
 
 with col2:
     fig, ax = plt.subplots(figsize=(8,4))

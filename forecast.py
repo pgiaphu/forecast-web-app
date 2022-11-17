@@ -145,7 +145,7 @@ st.subheader('3. Forecast')
 model =  st.radio(
             "Choose your forecast model 👇",
             ['UCM', 'SARIMAX', 'Prophet', 'Holt-Winter'],
-            key="Holt-Winter",
+            key="visibility",
             label_visibility='visible',
             horizontal=True)
 
@@ -206,7 +206,14 @@ select_type = 'auto'
 col1, col2 = st.columns([2,8])
 with col1:
     st.write('Select your paramater')
-    col3, col4 = st.columns(2)
+    
+    select_type =  st.radio(
+                "Choose your forecast model 👇",
+                ['Auto', 'Manual'],
+                key="visibility",
+                label_visibility='hide',
+                disabled=False,
+                horizontal=True)
     with col3:
         if st.button('Auto'):
             select_type = 'auto'

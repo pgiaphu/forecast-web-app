@@ -179,9 +179,8 @@ df_SARIMAX = pd.DataFrame()
 df_UCM = pd.DataFrame()
 
 
-if 'SARIMAX' in model:
-    df_SARIMAX = md.SARIMAX(df)
-    #df = df.merge(df_SARIMAX,left_index=True,right_index=True,how='outer',indicator=True)
+
+
 if 'UCM' in model:
     df_UCM = md.UCM(df)
     #df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
@@ -223,6 +222,11 @@ with col1:
         else:
             df_HW = md.HoltWinter(df)
 
+    if 'SARIMAX' in model:
+        if select_type == 'Manual':
+            p = st.number_input('p',value=int)
+        df_SARIMAX = md.SARIMAX(df)            
+            
     df['Model'] = 'Actual'
     df['Month'] = df.index.month
     df['Year'] = df.index.year

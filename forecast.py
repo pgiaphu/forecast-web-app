@@ -194,6 +194,7 @@ plot_type = 'trend'
 
 df['Month'] = df.index.month
 df['Year'] = df.index.year
+st.write(df)
 
 col1, col2, col3 = st.columns([1,1,5])
 with col1:

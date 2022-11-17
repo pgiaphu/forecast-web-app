@@ -223,6 +223,7 @@ with col1:
             df_HW = md.HoltWinter(df,alpha,beta,gamma)
         else:
             df_HW = md.HoltWinter(df)
+    st.write(df)
     st.write(df_HW)
     df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
     st.write(df)

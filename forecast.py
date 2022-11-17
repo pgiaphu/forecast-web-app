@@ -177,9 +177,8 @@ df.index = pd.to_datetime(df.index)
 df_HW = pd.DataFrame()
 df_SARIMAX = pd.DataFrame()
 df_UCM = pd.DataFrame()
-if 'Holt-Winter' in model:
-    df_HW = md.HoltWinter(df)
-    #df = df.merge(df_HW,left_index=True,right_index=True,how='outer',indicator=True)
+
+
 if 'SARIMAX' in model:
     df_SARIMAX = md.SARIMAX(df)
     #df = df.merge(df_SARIMAX,left_index=True,right_index=True,how='outer',indicator=True)
@@ -188,7 +187,7 @@ if 'UCM' in model:
     #df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
 df['Model'] = 'Actual'
 df_baseline['Model'] = 'Baseline'
-df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
+
 #df.drop(['_merge'],axis=1,inplace=True)
 
 plot_type = 'trend'
@@ -203,13 +202,28 @@ with col1:
 with col2:
     if st.button('Multiple line chart'):
         plot_type = 'multipleline'
-
+select_type = 'auto'
 col1, col2 = st.columns([2,8])
 with col1:
     st.write('Select your paramater')
-    alpha = st.slider('alpha', 0.00, 1.00, 0.25)
-    beta = st.slider('beta', 0.00, 1.00, 0.25)
-    gamma = st.slider('gamma', 0.00, 1.00, 0.25)
+    col3, col4 = st.columns(2)
+    with col3:
+        if st.button('Auto'):
+            select_type = 'auto'
+    with col4:
+        if st.button('Manual'):
+            select_type = 'manual'
+ 
+    if 'Holt-Winter' in model:
+        if select_type == 'manual':
+            alpha = st.slider('alpha', 0.00, 1.00, 0.25)
+            beta = st.slider('beta', 0.00, 1.00, 0.25)
+            gamma = st.slider('gamma', 0.00, 1.00, 0.25)
+            df_HW = md.HoltWinter(df,alpha,beta,gamma)
+        else:
+            df_HW = md.HoltWinter(df)
+df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])  
+
 with col2:
     fig, ax = plt.subplots(figsize=(8,4))
     sns.set_theme(style="white")

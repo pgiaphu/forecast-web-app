@@ -210,7 +210,7 @@ with col1:
     select_type =  st.radio(
                 "Choose your forecast model 👇",
                 ['Auto', 'Manual'],
-                key="visibility",
+                key="selecttype",
                 label_visibility='collapsed',
                 disabled=False,
                 horizontal=True)

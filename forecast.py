@@ -223,7 +223,7 @@ with col1:
             df_HW = md.HoltWinter(df,alpha,beta,gamma)
         else:
             df_HW = md.HoltWinter(df)
-df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])  
+    df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])  
 
 with col2:
     fig, ax = plt.subplots(figsize=(8,4))

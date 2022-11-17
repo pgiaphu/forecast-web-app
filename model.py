@@ -55,7 +55,11 @@ df_param = pd.DataFrame(data={'Model': ['SES','Holt-Winter','SARIMAX','UCM']})
 
 
 ############################################## 
-def HoltWinter(df: pd.DataFrame, alpha: float, beta: float, gamma: float):
+def HoltWinter(df: pd.DataFrame, **kwargs: float):
+ alpha = kwargs.get('alpha', None)
+ beta = kwargs.get('beta', None)
+ gamma = kwargs.get('gamma', None)
+ 
  df = clean_outlier(df)
  fcperiod = fc_length()
  df_HW = pd.DataFrame()

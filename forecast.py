@@ -211,7 +211,7 @@ with col1:
                 "Choose your forecast model 👇",
                 ['Auto', 'Manual'],
                 key="visibility",
-                label_visibility='hide',
+                label_visibility='collapsed',
                 disabled=False,
                 horizontal=True)
     with col3:

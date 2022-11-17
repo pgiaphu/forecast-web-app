@@ -224,7 +224,9 @@ with col1:
 
     if 'SARIMAX' in model:
         if select_type == 'Manual':
-            p = st.number_input('p',value=int,min_value=int,max_value=int,step=1)
+            p = st.number_input('p',value=1,min_value=0,max_value=24,step=1)
+            q = st.number_input('q',value=1,min_value=0,max_value=24,step=1)
+            d = st.number_input('d',value=1,min_value=0,max_value=24,step=1)
         df_SARIMAX = md.SARIMAX(df)            
             
     df['Model'] = 'Actual'

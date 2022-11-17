@@ -55,11 +55,7 @@ df_param = pd.DataFrame(data={'Model': ['SES','Holt-Winter','SARIMAX','UCM']})
 
 
 ############################################## 
-def HoltWinter(df: pd.DataFrame, **kwargs: float):
- alpha = kwargs.get('alpha', None)
- beta = kwargs.get('beta', None)
- gamma = kwargs.get('gamma', None)
- 
+def HoltWinter(df: pd.DataFrame,alpha=1,beta=1,gamma=1):
  df = clean_outlier(df)
  fcperiod = fc_length()
  df_HW = pd.DataFrame()
@@ -67,14 +63,19 @@ def HoltWinter(df: pd.DataFrame, **kwargs: float):
  future_index.append(df.tail(12).index.shift(12,freq="MS"))
 
  for sku in df.columns:
-        
+  if alpha+beta+gamma == 3:
         try:
          fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), initialization_method="heuristic",seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
         except:
          fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]),seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
-        arr_forecast = fitHW.forecast(fcperiod)
-        df_HW[sku] = arr_forecast
-        df_HW.set_index(future_index,inplace=True)
+  else:
+        try:
+         fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), initialization_method="heuristic",seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(smoothing_level=alpha,smoothing_trend=beta,smoothing_seasonal=gamma)
+        except:
+         fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]),seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(smoothing_level=alpha,smoothing_trend=beta,smoothing_seasonal=gamma)
+ arr_forecast = fitHW.forecast(fcperiod)
+ df_HW[sku] = arr_forecast
+ df_HW.set_index(future_index,inplace=True)
     
  df_HW['Model'] = 'Holt-Winter'
  return df_HW

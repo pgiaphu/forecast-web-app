@@ -181,9 +181,8 @@ df_UCM = pd.DataFrame()
 
 
 
-if 'UCM' in model:
-    df_UCM = md.UCM(df)
-    #df = df.merge(df_UCM,left_index=True,right_index=True,how='outer',indicator=True)
+
+
 
 df_baseline['Model'] = 'Baseline'
 
@@ -222,6 +221,17 @@ with col1:
         else:
             df_HW = md.HoltWinter(df)
 
+    if 'UCM' in model:
+        if select_type == 'Manual':
+            ucmmodel = st.select_slider(
+                'Model',
+                options=['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend'])
+            ar = st.number_input('Auto Regressive',value=1,min_value=0,max_value=12,step=1)
+            f = st.number_input('Fourier order',value=1,min_value=0,max_value=100,step=2)
+            
+        else:
+            df_UCM = md.UCM(df)
+    
     if 'SARIMAX' in model:
         if select_type == 'Manual':
             p = st.number_input('p',value=1,min_value=0,max_value=24,step=1)

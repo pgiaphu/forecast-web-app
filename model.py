@@ -116,7 +116,7 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
     df_SARIMAX['Model'] = 'SARIMAX'
     return df_SARIMAX
 ############################################## 
-def UCM(df: pd.DataFrame):
+def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
       df = clean_outlier(df)
       fcperiod = fc_length()
       df_UCM = pd.DataFrame()
@@ -124,16 +124,41 @@ def UCM(df: pd.DataFrame):
       future_index.append(df.tail(12).index.shift(12,freq="MS"))
       
       for sku in df.columns:
-            fitUCM = sm.tsa.UnobservedComponents(
-                   np.asarray(df[sku]),
-                   #exog = exog_fit,
-                   level=True, trend=False,cycle=True,irregular=True,damped_cycle=True,
-                   stochastic_level=False,stochastic_trend=True,
-                   #autoregressive= pUCM,
-                   freq_seasonal=[{'period':12,'harmonics':12}]).fit()
-            arr_forecast = fitUCM.forecast(fcperiod)#,exog = exog_fc)
-            df_UCM[sku] = arr_forecast
-            df_UCM.set_index(future_index,inplace=True)
+        if f+ar == 0 and ucmmodel == 'ntrend':
+          ucmmodel = ['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend']
+          fitUCM = {
+              mod :
+              sm.tsa.UnobservedComponents(
+              np.asarray(df[sku]),
+              exog = exog_fit,
+              level= mod,
+              cycle=True,irregular=True,damped_cycle=True,
+              #autoregressive= pUCM,
+              freq_seasonal=[{'period':12,'harmonics':12}]).fit().aicc
+              for mod in ucmmodel}
+          minaicc = min(fitUCM, key=fitUCM.get)
+          fitUCM = sm.tsa.UnobservedComponents(
+              np.asarray(df[sku]),
+              exog = exog_fit,
+              level= minaicc,
+              cycle=True,irregular=True,damped_cycle=True,
+              #use_exact_diffuse=False,
+              #autoregressive= pUCM,
+              freq_seasonal=[{'period':12,'harmonics':12}]).fit()
+        else:
+           fitUCM = sm.tsa.UnobservedComponents(
+              np.asarray(df[sku]),
+              #exog = exog_fit,
+              level= ucmmodel,
+              cycle=True,irregular=True,damped_cycle=True,
+              #use_exact_diffuse=False,
+              autoregressive= ar,
+              freq_seasonal=[{'period':12,'harmonics':f}]).fit()
+         
+            
+        arr_forecast = fitUCM.forecast(fcperiod)#,exog = exog_fc)
+        df_UCM[sku] = arr_forecast
+        df_UCM.set_index(future_index,inplace=True)
  
       df_UCM['Model'] = 'UCM'
       return df_UCM

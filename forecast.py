@@ -228,7 +228,7 @@ with col1:
                 options=['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend'])
             ar = st.number_input('Auto Regressive',value=1,min_value=0,max_value=12,step=1)
             f = st.number_input('Fourier order',value=1,min_value=0,max_value=100,step=2)
-            
+            df_UCM = md.UCM(df,f,ar,ucmmodel)         
         else:
             df_UCM = md.UCM(df)
     

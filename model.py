@@ -130,7 +130,7 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
               mod :
               sm.tsa.UnobservedComponents(
               np.asarray(df[sku]),
-              exog = exog_fit,
+              #exog = exog_fit,
               level= mod,
               cycle=True,irregular=True,damped_cycle=True,
               #autoregressive= pUCM,
@@ -139,7 +139,7 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
           minaicc = min(fitUCM, key=fitUCM.get)
           fitUCM = sm.tsa.UnobservedComponents(
               np.asarray(df[sku]),
-              exog = exog_fit,
+              #exog = exog_fit,
               level= minaicc,
               cycle=True,irregular=True,damped_cycle=True,
               #use_exact_diffuse=False,

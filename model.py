@@ -108,9 +108,9 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
               #dtest = pmd.arima.ndiffs(np.asarray(df[sku])) #first diff
               #Dtest = pmd.arima.nsdiffs(np.asarray(df[sku]), 12) #seasonal diff
               ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
-                                         start_p=0, max_p=4,
+                                         start_p=0, max_p=6,
                                          d=0, max_d=2,
-                                         start_q=0, max_q=4,
+                                         start_q=0, max_q=6,
                                          start_P=0, max_P=2,
                                          start_Q=0, max_Q=2,
                                          D=0,max_D=2,

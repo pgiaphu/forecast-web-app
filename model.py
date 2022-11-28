@@ -111,11 +111,11 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,pseas=0,qseas=0,dseas=0):
               ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]),
                                          information_criterion = 'aicc',
                                          start_p=0, max_p=6,
-                                         d=0, max_d=2,
+                                         d=1, max_d=2,
                                          start_q=0, max_q=6,
                                          start_P=0, max_P=2,
                                          start_Q=0, max_Q=2,
-                                         D=0,max_D=2,
+                                         D=1,max_D=2,
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         else:

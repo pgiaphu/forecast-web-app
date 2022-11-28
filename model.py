@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from scipy.stats import zscore
 import statsmodels.api as sm
+import itertools
  
 ############################################## 
 def working_day():
@@ -61,11 +62,25 @@ def HoltWinter(df: pd.DataFrame,alpha=1,beta=1,gamma=1):
  df_HW = pd.DataFrame()
  future_index = []
  future_index.append(df.tail(12).index.shift(12,freq="MS"))
+ 
+ HW_param_gridsearch = {  
+    'initialization_method': ['heuristic','estimated','legacy-heuristic'],
+    'seasonal': ['add','mul'],
+    'trend': ['add','mul'],
+    'damped_trend': [True,False],
+    'use_boxcox': [True,False],
+                    }
+ HW_all_params = [dict(zip(HW_param_gridsearch.keys(), v)) for v in itertools.product(*HW_param_gridsearch.values())]
+ hw =[]
+
 
  for sku in df.columns:
   if alpha+beta+gamma == 3:
         try:
-         fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), initialization_method="heuristic",seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
+         for params in HW_all_params:
+           hw.append(sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), seasonal_periods=12,**params).fit(optimized=True).aicc)
+           minhw = HW_all_params[np.argmin(hw)]
+           fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), seasonal_periods=12,**minhw).fit(optimized=True)
         except:
          fitHW = sm.tsa.ExponentialSmoothing(np.asarray(df[sku]),seasonal_periods=12,trend='add', seasonal='add',damped_trend=True).fit(optimized=True)
   else:
@@ -86,16 +101,19 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
     df_SARIMAX = pd.DataFrame()
     future_index = []
     future_index.append(df.tail(12).index.shift(12,freq="MS"))
+
     
     for sku in df.columns:
         if p+q+d+P+Q+D == 0:
+              d = pmd.arima.ndiffs(np.asarray(df[sku])) #first diff
+              D = pmd.arima.nsdiffs(np.asarray(df[sku]), 12) #seasonal diff
               ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
-                                         start_p=0, max_p=12,
-                                         d=1, max_d=2,
-                                         start_q=0, max_q=12,
-                                         start_P=0, max_P=12,
-                                         start_Q=0, max_Q=12,
-                                         D=1,max_D=2,
+                                         start_p=0, max_p=4,
+                                         d=0, max_d=d,
+                                         start_q=0, max_q=4,
+                                         start_P=0, max_P=2,
+                                         start_Q=0, max_Q=2,
+                                         D=0,max_D=D,
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         else:
@@ -125,25 +143,30 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
       
       for sku in df.columns:
         if f+ar == 0 and ucmmodel == 'ntrend':
-          ucmmodel = ['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend']
-          fitUCM = {
-              mod :
-              sm.tsa.UnobservedComponents(
-              np.asarray(df[sku]),
-              #exog = exog_fit,
-              level= mod,
-              cycle=True,irregular=True,damped_cycle=True,
-              #autoregressive= pUCM,
-              freq_seasonal=[{'period':12,'harmonics':12}]).fit().aicc
-              for mod in ucmmodel}
-          minaicc = min(fitUCM, key=fitUCM.get)
+          UCM_param_gridsearch = {  
+            'level': ['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend'],
+            'cycle': [True,False],
+            'irregular': [True,False],
+            'damped_cycle': [True,False],
+            'use_exact_diffuse': [True,False],
+            'autoregressive': [1,2]
+                            }
+          UCM_all_params = [dict(zip(UCM_param_gridsearch.keys(), v)) for v in itertools.product(*UCM_param_gridsearch.values())]
+          ucm =[]
+          
+          for params in UCM_all_params: 
+                 ucm.append(
+                     sm.tsa.UnobservedComponents(
+                     np.asarray(df[sku]),
+                     #exog = exog_fit,
+                     **params,
+                     freq_seasonal=[{'period':12,'harmonics':12}]).fit().aicc)
+          minUCM = UCM_all_params[np.argmin(ucm)]
+
           fitUCM = sm.tsa.UnobservedComponents(
               np.asarray(df[sku]),
               #exog = exog_fit,
-              level= minaicc,
-              cycle=True,irregular=True,damped_cycle=True,
-              #use_exact_diffuse=False,
-              #autoregressive= pUCM,
+              **minUCM,
               freq_seasonal=[{'period':12,'harmonics':12}]).fit()
         else:
            fitUCM = sm.tsa.UnobservedComponents(

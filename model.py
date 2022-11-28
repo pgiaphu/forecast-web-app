@@ -95,7 +95,7 @@ def HoltWinter(df: pd.DataFrame,alpha=1,beta=1,gamma=1):
  df_HW['Model'] = 'Holt-Winter'
  return df_HW
  ############################################## 
-def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
+def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,Pp=0,Qq=0,Dd=0):
     df = clean_outlier(df)
     fcperiod = fc_length()
     df_SARIMAX = pd.DataFrame()
@@ -104,7 +104,7 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
 
     
     for sku in df.columns:
-        if p+q+d+P+Q+D == 0:
+        if p+q+d+Pp+Qq+Dd == 0:
               #dtest = pmd.arima.ndiffs(np.asarray(df[sku])) #first diff
               #Dtest = pmd.arima.nsdiffs(np.asarray(df[sku]), 12) #seasonal diff
               ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]), 
@@ -121,9 +121,9 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,P=0,Q=0,D=0):
                                          start_p=p, max_p=p,
                                          d=d, max_d=d,
                                          start_q=q, max_q=q,
-                                         start_P=P, max_P=P,
-                                         start_Q=Q, max_Q=Q,
-                                         D=D,max_D=D,
+                                         start_P=Pp, max_P=Pp,
+                                         start_Q=Qq, max_Q=Qq,
+                                         D=Dd,max_D=Dd,
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         

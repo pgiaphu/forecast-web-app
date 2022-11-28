@@ -237,10 +237,10 @@ with col1:
             p = st.number_input('p',value=1,min_value=0,max_value=24,step=1)
             q = st.number_input('q',value=1,min_value=0,max_value=24,step=1)
             d = st.number_input('d',value=1,min_value=0,max_value=3,step=1)
-            P = st.number_input('P',value=1,min_value=0,max_value=6,step=1)
-            Q = st.number_input('Q',value=1,min_value=0,max_value=6,step=1)
-            D = st.number_input('D',value=1,min_value=0,max_value=3,step=1)
-            df_SARIMAX = md.SARIMAX(df,p,q,d,P,Q,D) 
+            pseas = st.number_input('P',value=1,min_value=0,max_value=6,step=1)
+            qseas = st.number_input('Q',value=1,min_value=0,max_value=6,step=1)
+            dseas = st.number_input('D',value=1,min_value=0,max_value=3,step=1)
+            df_SARIMAX = md.SARIMAX(df,p,q,d,pseas,qseas,dseas) 
         else:
             df_SARIMAX = md.SARIMAX(df)
             

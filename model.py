@@ -122,9 +122,9 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,pseas=0,qseas=0,dseas=0):
                                          start_p=p, max_p=p,
                                          d=d, max_d=d,
                                          start_q=q, max_q=q,
-                                         start_P=Pp, max_P=Pp,
-                                         start_Q=Qq, max_Q=Qq,
-                                         D=Dd,max_D=Dd,
+                                         start_P=pseas, max_P=pseas,
+                                         start_Q=qseas, max_Q=qseas,
+                                         D=dseas,max_D=dseas,
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         

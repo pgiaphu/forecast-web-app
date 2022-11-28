@@ -128,8 +128,8 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,pseas=0,qseas=0,dseas=0):
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         
-     arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
-     df_SARIMAX[sku] = arr_forecast
+    arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
+    df_SARIMAX[sku] = arr_forecast
 
     df_SARIMAX.set_index(future_index,inplace=True)
     df_SARIMAX['Model'] = 'SARIMAX'

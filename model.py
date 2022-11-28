@@ -128,8 +128,8 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,pseas=0,qseas=0,dseas=0):
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         
-        arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
-        df_SARIMAX[sku] = arr_forecast
+     arr_forecast = ap_autoarimamodel.predict(n_periods=fcperiod,return_conf_int = False)
+     df_SARIMAX[sku] = arr_forecast
 
     df_SARIMAX.set_index(future_index,inplace=True)
     df_SARIMAX['Model'] = 'SARIMAX'
@@ -150,8 +150,6 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
         'autoregressive': [1,2]
                         }
       UCM_all_params = [dict(zip(UCM_param_gridsearch.keys(), v)) for v in itertools.product(*UCM_param_gridsearch.values())]
-      ucm =[]
-      
       for sku in df.columns:
         if f+ar == 0 and ucmmodel == 'ntrend':
           ucm =[]
@@ -179,9 +177,9 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
               freq_seasonal=[{'period':12,'harmonics':f}]).fit()
          
             
-        arr_forecast = fitUCM.forecast(fcperiod)#,exog = exog_fc)
-        df_UCM[sku] = arr_forecast
-        df_UCM.set_index(future_index,inplace=True)
+      arr_forecast = fitUCM.forecast(fcperiod)#,exog = exog_fc)
+      df_UCM[sku] = arr_forecast
+      df_UCM.set_index(future_index,inplace=True)
  
       df_UCM['Model'] = 'UCM'
       return df_UCM

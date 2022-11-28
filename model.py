@@ -71,11 +71,12 @@ def HoltWinter(df: pd.DataFrame,alpha=1,beta=1,gamma=1):
     'use_boxcox': [True,False],
                     }
  HW_all_params = [dict(zip(HW_param_gridsearch.keys(), v)) for v in itertools.product(*HW_param_gridsearch.values())]
- hw =[]
+ 
 
 
  for sku in df.columns:
   if alpha+beta+gamma == 3:
+        hw =[]
         try:
          for params in HW_all_params:
            hw.append(sm.tsa.ExponentialSmoothing(np.asarray(df[sku]), seasonal_periods=12,**params).fit(optimized=True).aicc)

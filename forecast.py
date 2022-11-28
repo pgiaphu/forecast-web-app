@@ -144,7 +144,7 @@ st.subheader('3. Forecast')
 
 model =  st.radio(
             "Choose your forecast model 👇",
-            ['UCM', 'SARIMAX', 'Prophet', 'Holt-Winter'],
+            ['Holt-Winter','UCM', 'SARIMAX', 'Prophet'],
             key="visibility",
             label_visibility='visible',
             horizontal=True)

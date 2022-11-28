@@ -152,15 +152,14 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
       ucm =[]
       
       for sku in df.columns:
-        if f+ar == 0 and ucmmodel == 'ntrend':
-          
+        if f+ar == 0 and ucmmodel == 'ntrend':   
           for params in UCM_all_params: 
                  ucm.append(
-                     sm.tsa.UnobservedComponents(
-                     np.asarray(df[sku]),
-                     #exog = exog_fit,
-                     **params,
-                     freq_seasonal=[{'period':12,'harmonics':12}]).fit().aicc)
+                    sm.tsa.UnobservedComponents(
+                      np.asarray(df[sku]),
+                      #exog = exog_fit,
+                      **params,
+                      freq_seasonal=[{'period':12,'harmonics':12}]).fit().aicc)
           minUCM = UCM_all_params[np.argmin(ucm)]
 
           fitUCM = sm.tsa.UnobservedComponents(

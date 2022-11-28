@@ -140,19 +140,19 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
       df_UCM = pd.DataFrame()
       future_index = []
       future_index.append(df.tail(12).index.shift(12,freq="MS"))
+      UCM_param_gridsearch = {  
+        'level': ['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend'],
+        'cycle': [True,False],
+        'irregular': [True,False],
+        'damped_cycle': [True,False],
+        'use_exact_diffuse': [True,False],
+        'autoregressive': [1,2]
+                        }
+      UCM_all_params = [dict(zip(UCM_param_gridsearch.keys(), v)) for v in itertools.product(*UCM_param_gridsearch.values())]
+      ucm =[]
       
       for sku in df.columns:
         if f+ar == 0 and ucmmodel == 'ntrend':
-          UCM_param_gridsearch = {  
-            'level': ['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend'],
-            'cycle': [True,False],
-            'irregular': [True,False],
-            'damped_cycle': [True,False],
-            'use_exact_diffuse': [True,False],
-            'autoregressive': [1,2]
-                            }
-          UCM_all_params = [dict(zip(UCM_param_gridsearch.keys(), v)) for v in itertools.product(*UCM_param_gridsearch.values())]
-          ucm =[]
           
           for params in UCM_all_params: 
                  ucm.append(

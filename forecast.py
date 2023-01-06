@@ -64,14 +64,14 @@ with st.sidebar:
         
         st.info(
             f"""
-                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan-my.sharepoint.com/:x:/g/personal/phamgiaphu_duytan_com1/EYe1ArKWaulDhLa1G9mPrnMB7C3G_F_mkvJ-7c93u6c9kw?e=j3HVCj)
+                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan.sharepoint.com/:x:/s/baocaobi/EeDcLaIbl3VBrrjRitTVIFgBPX93RtQlNAPDy0Mpv4ieHg?e=PWtIVx)
                 """)
         
         
     else:
         st.info(
             f"""
-                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan-my.sharepoint.com/:x:/g/personal/phamgiaphu_duytan_com1/EYe1ArKWaulDhLa1G9mPrnMB7C3G_F_mkvJ-7c93u6c9kw?e=j3HVCj)
+                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan.sharepoint.com/:x:/s/baocaobi/EeDcLaIbl3VBrrjRitTVIFgBPX93RtQlNAPDy0Mpv4ieHg?e=PWtIVx)
                 """)
         st.stop()
 
@@ -255,7 +255,7 @@ with col1:
             changepoint = st.number_input('changepoint_scale',value=0.001,min_value=0,max_value=1,step=0.1)
             n = st.number_input('n_changepoint',value=5,min_value=1,max_value=20,step=1)
             fourier = st.number_input('Fourier',value=1,min_value=0,max_value=6,step=1)
-            df_Prophet = md.PPhet(df,growth,seasonality,changepoint,n,fourier) 
+            df_Prophet = md.PPhet(df,growth,seasonality,changepoint,n,fourier,select_type) 
         else:
             df_Prophet = md.PPhet(df)
             

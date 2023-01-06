@@ -242,7 +242,7 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
         df_f = m.make_future_dataframe(periods=fcperiod,freq='MS')
         df_f['cap'] = df_model.y.quantile(0.95)+1
         df_f['floor'] = df_model.y.quantile(0.1)
-        df_f['wd'] = np.asarray(np.concatenate((exog_fit.to_numpy(),exog_fc.to_numpy()),axis=0))
+        #df_f['wd'] = np.asarray(np.concatenate((exog_fit.to_numpy(),exog_fc.to_numpy()),axis=0))
         forecast = m.predict(df_f)
         df_P[sku] = forecast.yhat.tail(fcperiod)
     return df_P

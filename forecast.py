@@ -144,7 +144,7 @@ st.subheader('3. Forecast')
 
 model =  st.radio(
             "Choose your forecast model 👇",
-            ['Holt-Winter','UCM', 'SARIMAX', 'Prophet'],
+            ['Holt-Winter','UCM', 'SARIMAX', 'Prophet', 'XGBoosting', 'LightGBM'],
             key="visibility",
             label_visibility='visible',
             horizontal=True)
@@ -243,6 +243,22 @@ with col1:
             df_SARIMAX = md.SARIMAX(df,p,q,d,pseas,qseas,dseas) 
         else:
             df_SARIMAX = md.SARIMAX(df)
+            
+    if 'Prophet' in model:
+        if select_type == 'Manual':
+            growth = st.select_slider(
+                'Trend',
+                options=['logistic','linear','flat'])
+            seasonality = st.select_slider(
+                'Seasonality',
+                options=['additive', 'multiplicative'])
+            changepoint = st.number_input('changepoint_scale',value=0.001,min_value=0,max_value=1,step=0.1)
+            n = st.number_input('n_changepoint',value=5,min_value=1,max_value=20,step=1)
+            fourier = st.number_input('Fourier',value=1,min_value=0,max_value=6,step=1)
+            df_Prophet = md.PPhet(df,growth,seasonality,changepoint,n,fourier) 
+        else:
+            df_Prophet = md.PPhet(df)
+            
             
     df['Model'] = 'Actual'
     df['Month'] = df.index.month

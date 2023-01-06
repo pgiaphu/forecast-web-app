@@ -177,6 +177,7 @@ df.index = pd.to_datetime(df.index)
 df_HW = pd.DataFrame()
 df_SARIMAX = pd.DataFrame()
 df_UCM = pd.DataFrame()
+df_P = pd.DataFrame()
 
 
 
@@ -255,15 +256,15 @@ with col1:
             changepoint = st.number_input('changepoint_scale',value=0.001,min_value=0,max_value=1,step=0.1)
             n = st.number_input('n_changepoint',value=5,min_value=1,max_value=20,step=1)
             fourier = st.number_input('Fourier',value=1,min_value=0,max_value=6,step=1)
-            df_Prophet = md.PPhet(df,growth,seasonality,changepoint,n,fourier,select_type) 
+            df_P = md.PPhet(df,growth,seasonality,changepoint,n,fourier,select_type) 
         else:
-            df_Prophet = md.PPhet(df)
+            df_P = md.PPhet(df)
             
             
     df['Model'] = 'Actual'
     df['Month'] = df.index.month
     df['Year'] = df.index.year
-    df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM])
+    df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM,df_P])
 
 
 with col2:

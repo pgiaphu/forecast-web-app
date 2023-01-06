@@ -232,7 +232,7 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
                         .fit(df_model)) 
         else:
             m = (
-                Prophet(growth=growth,seasonality_mode=seasonality,changepoint_prior_scale = changepoint, n_changepoints=n,  ,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
+                Prophet(growth=growth,seasonality_mode=seasonality,changepoint_prior_scale = changepoint, n_changepoints=n, weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
                         .add_seasonality(name='monthly', period=12, fourier_order=fourier,prior_scale=0.1)
                         #.add_regressor('wd')
                         .add_country_holidays(country_name='VN')

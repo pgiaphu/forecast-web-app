@@ -245,6 +245,7 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
         #df_f['wd'] = np.asarray(np.concatenate((exog_fit.to_numpy(),exog_fc.to_numpy()),axis=0))
         forecast = m.predict(df_f)
         df_P[sku] = forecast.yhat.tail(fcperiod)
+        df_P['Model'] = 'Prophet'
     return df_P
     
     

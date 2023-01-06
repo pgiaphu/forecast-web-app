@@ -187,7 +187,7 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
     
    
 ############################################## 
-def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.1, n=5):
+def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.1, n=5, fourier=12,select_type='Auto'):
     df = clean_outlier(df)
     fcperiod = fc_length()
     df_P = pd.DataFrame()
@@ -208,29 +208,36 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
         df_model.rename(columns={'Date': 'ds', sku: 'y'},inplace=True)
         df_model['cap'] = df_model.y.quantile(0.95)+1
         df_model['floor'] = df_model.y.quantile(0.1)
-        df_model['wd'] = np.asarray(exog_fit)
+        #df_model['wd'] = np.asarray(exog_fit)
         
     #detect if auto or manual
+        if select_type <> 'Manual':       
+            for params in all_params:
+                #cross validation search for best fit
+                m = (
+                    Prophet(**params,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
+                            .add_seasonality(name='monthly', period=12, fourier_order=12,prior_scale=0.1)
+                            #.add_regressor('wd')
+                            .add_country_holidays(country_name='VN')
+                            .fit(df_model))
 
-        
-        for params in all_params:
-            #cross validation search for best fit
+                rmses.append(np.sqrt(MSE(df_model['y'], m.predict(df_model)['yhat'] )))
+
+            best_params = all_params[np.argmin(rmses)]   
             m = (
-                Prophet(**params,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
+                Prophet(**best_params,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
                         .add_seasonality(name='monthly', period=12, fourier_order=12,prior_scale=0.1)
-                        .add_regressor('wd')
+                        #.add_regressor('wd')
+                        .add_country_holidays(country_name='VN')
+                        .fit(df_model)) 
+        else:
+            m = (
+                Prophet(growth=growth,seasonality_mode=seasonality,changepoint_prior_scale = changepoint, n_changepoints=n,  ,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
+                        .add_seasonality(name='monthly', period=12, fourier_order=fourier,prior_scale=0.1)
+                        #.add_regressor('wd')
                         .add_country_holidays(country_name='VN')
                         .fit(df_model))
-
-            rmses.append(np.sqrt(MSE(df_model['y'], m.predict(df_model)['yhat'] )))
-    
-        best_params = all_params[np.argmin(rmses)]   
-        m = (
-            Prophet(**best_params,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
-                    .add_seasonality(name='monthly', period=12, fourier_order=12,prior_scale=0.1)
-                    .add_regressor('wd')
-                    .add_country_holidays(country_name='VN')
-                    .fit(df_model)) 
+            
         df_f = m.make_future_dataframe(periods=fcperiod,freq='MS')
         df_f['cap'] = df_model.y.quantile(0.95)+1
         df_f['floor'] = df_model.y.quantile(0.1)

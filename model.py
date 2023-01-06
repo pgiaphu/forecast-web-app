@@ -211,7 +211,7 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
         #df_model['wd'] = np.asarray(exog_fit)
         
     #detect if auto or manual
-        if select_type <> 'Manual':       
+        if select_type != 'Manual':       
             for params in all_params:
                 #cross validation search for best fit
                 m = (

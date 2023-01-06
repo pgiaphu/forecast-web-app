@@ -253,7 +253,7 @@ with col1:
             seasonality = st.select_slider(
                 'Seasonality',
                 options=['additive', 'multiplicative'])
-            changepoint = st.number_input('changepoint_scale',value=0.001,min_value=0,max_value=1,step=0.1)
+            changepoint = st.number_input('changepoint_scale',value=0.001,max_value=1)
             n = st.number_input('n_changepoint',value=5,min_value=1,max_value=20,step=1)
             fourier = st.number_input('Fourier',value=1,min_value=0,max_value=6,step=1)
             df_P = md.PPhet(df,growth,seasonality,changepoint,n,fourier,select_type) 

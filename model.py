@@ -192,6 +192,8 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
     df = clean_outlier(df)
     fcperiod = fc_length()
     df_P = pd.DataFrame()
+    future_index = []
+    future_index.append(df.tail(12).index.shift(12,freq="MS"))
     
     param_gridsearch = {  
             'changepoint_prior_scale': [0.1, 0.5],
@@ -245,6 +247,7 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
         #df_f['wd'] = np.asarray(np.concatenate((exog_fit.to_numpy(),exog_fc.to_numpy()),axis=0))
         forecast = m.predict(df_f)
         df_P[sku] = forecast.yhat.tail(fcperiod)
+        df_P.set_index(future_index,inplace=True)
         df_P['Model'] = 'Prophet'
     return df_P
     

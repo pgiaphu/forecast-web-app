@@ -110,12 +110,12 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,pseas=0,qseas=0,dseas=0):
               #Dtest = pmd.arima.nsdiffs(np.asarray(df[sku]), 12) #seasonal diff
               ap_autoarimamodel = pmd.arima.auto_arima(np.asarray(df[sku]),
                                          information_criterion = 'aicc',
-                                         start_p=0, max_p=6,
-                                         d=1, max_d=2,
-                                         start_q=0, max_q=6,
+                                         start_p=0, max_p=5,
+                                         d=1, max_d=1,
+                                         start_q=0, max_q=5,
                                          start_P=0, max_P=2,
                                          start_Q=0, max_Q=2,
-                                         D=1,max_D=2,
+                                         D=1,max_D=1,
                                          m=12,seasonal=True,
                                          error_action='warn',trace=True,supress_warnings=True,stepwise=True,random_state=20,n_fits=50)
         else:
@@ -185,6 +185,58 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
       df_UCM['Model'] = 'UCM'
       return df_UCM
     
+   
+############################################## 
+def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.1, n=5):
+    df = clean_outlier(df)
+    fcperiod = fc_length()
+    df_P = pd.DataFrame()
     
+    param_gridsearch = {  
+            'changepoint_prior_scale': [0.1, 0.5],
+            'growth': ['logistic','linear'],
+            #'seasonality_prior_scale': [0.1, 4],
+            'seasonality_mode': ['additive', 'multiplicative'],
+            'n_changepoints': [3],
+                            }
+
+    all_params = [dict(zip(param_gridsearch.keys(), v)) for v in itertools.product(*param_gridsearch.values())]
+    rmses = []
+    
+    for sku in df.columns:
+        df_model = pd.DataFrame(df[sku].copy()).reset_index()
+        df_model.rename(columns={'Date': 'ds', sku: 'y'},inplace=True)
+        df_model['cap'] = df_model.y.quantile(0.95)+1
+        df_model['floor'] = df_model.y.quantile(0.1)
+        df_model['wd'] = np.asarray(exog_fit)
+        
+    #detect if auto or manual
+    if
+        
+        for params in all_params:
+            #cross validation search for best fit
+            m = (
+                Prophet(**params,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
+                        .add_seasonality(name='monthly', period=12, fourier_order=12,prior_scale=0.1)
+                        .add_regressor('wd')
+                        .add_country_holidays(country_name='VN')
+                        .fit(df_model))
+
+            rmses.append(np.sqrt(MSE(df_model['y'], m.predict(df_model)['yhat'] )))
+    
+        best_params = all_params[np.argmin(rmses)]   
+        m = (
+            Prophet(**best_params,weekly_seasonality=False,daily_seasonality=False,yearly_seasonality=False,uncertainty_samples=0)
+                    .add_seasonality(name='monthly', period=12, fourier_order=12,prior_scale=0.1)
+                    .add_regressor('wd')
+                    .add_country_holidays(country_name='VN')
+                    .fit(df_model)) 
+        df_f = m.make_future_dataframe(periods=fcperiod,freq='MS')
+        df_f['cap'] = df_model.y.quantile(0.95)+1
+        df_f['floor'] = df_model.y.quantile(0.1)
+        df_f['wd'] = np.asarray(np.concatenate((exog_fit.to_numpy(),exog_fc.to_numpy()),axis=0))
+        forecast = m.predict(df_f)
+        df_P[sku] = forecast.yhat.tail(fcperiod)
+    return df_P
     
     

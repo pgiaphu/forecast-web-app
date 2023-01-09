@@ -409,7 +409,7 @@ def lightgbm_forecast(df: pd.DataFrame(),*args):
 
 ####################################################################
 
-def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*param):
+def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*args):
  df_XGB = pd.DataFrame()
  df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()
@@ -424,7 +424,7 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*param):
       bestparam = optimal_fc(df,model)
      else:
       bestparam = {}
-      for i in param:
+      for i in args:
         for key, value in i.items():
             bestparam[key] = value 
       

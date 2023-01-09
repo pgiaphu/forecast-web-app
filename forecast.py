@@ -260,11 +260,14 @@ with col1:
         else:
             df_P = md.PPhet(df)
             
+    if 'XGBoosting' in model:
+        df_XGB, df_LGBM = md.ML_FC(df)
+            
             
     df['Model'] = 'Actual'
     df['Month'] = df.index.month
     df['Year'] = df.index.year
-    df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM,df_P])
+    df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM,df_P, df_XGB])
 
 
 with col2:

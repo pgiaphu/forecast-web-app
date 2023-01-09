@@ -415,7 +415,7 @@ def ML_FC(data: pd.DataFrame, model='XGB',param='None'):
  df_fc = pd.DataFrame()
  fcperiod = fc_length()
  future_index = []
- future_index.append(df.tail(12).index.shift(12,freq="MS"))
+ future_index.append(data.tail(12).index.shift(12,freq="MS"))
 
 
  for sku in list(data):

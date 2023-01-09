@@ -184,6 +184,7 @@ df_LGBM = pd.DataFrame()
 
 
 
+st.table(df)
 
 
 

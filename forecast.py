@@ -263,7 +263,24 @@ with col1:
             df_P = md.PPhet(df)
             
     if 'XGBoosting' in model:
-        df_XGB, df_LGBM = md.ML_FC(df)
+        if select_type == 'Manual':
+            learning_rate = st.slider('learning_rate', 0.00, 1.00, 0.001)
+            max_depth = st.slider('max_dept', 0, 100, 10)
+            n_estimators = st.slider('n_estimator', 10, 1000, 100)
+            max_leaves = st.slider('max_leaves', 10, 100, 10)
+            tree_method = st.select_slider(
+                'Tree_method',
+                options=['hist','exact'])
+            param_gridsearch = {  
+                    'learning_rate': learning_rate,
+                    'max_depth': max_depth,
+                    'n_estimators': n_estimators,
+                    'tree_method': tree_method,
+                    'max_leaves': max_leaves
+                        }
+            df_XGB, df_LGBM = md.ML_FC(df,model='XGB',param=param_gridsearch)
+        else:
+            df_XGB, df_LGBM = md.ML_FC(df)
             
             
     df['Model'] = 'Actual'

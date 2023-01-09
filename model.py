@@ -421,7 +421,11 @@ def ML_FC(data: pd.DataFrame, model='XGB',param='None'):
      if param == 'None':
       bestparam = optimal_fc(df,model)
      else:
-      bestparam = param
+      bestparam = {}
+      for i in param:
+        for key, value in i.items():
+            bestparam[key] = value 
+      
 
      if model =='LGBM':
          for i in range(1,fcperiod+1):

@@ -414,6 +414,8 @@ def ML_FC(data: pd.DataFrame, model='XGB',param='None'):
  df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()
  fcperiod = fc_length()
+ future_index = []
+ future_index.append(df.tail(12).index.shift(12,freq="MS"))
 
 
  for sku in list(data):
@@ -448,11 +450,9 @@ def ML_FC(data: pd.DataFrame, model='XGB',param='None'):
              df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
          df_XGB[sku] = df_fc[sku].tail(fcperiod)
          df_XGB['Model'] = 'XGB'
+         
 
-
-
- 
-
- 
+ df_XGB.set_index(future_index,inplace=True)
+ df_LGBM.set_index(future_index,inplace=True)
  return df_XGB, df_LGBM
 

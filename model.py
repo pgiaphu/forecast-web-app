@@ -7,6 +7,8 @@ from scipy.stats import zscore
 import statsmodels.api as sm
 import itertools
 from sklearn.metrics import mean_squared_error as MSE
+from xgboost import XGBRegressor
+from lightgbm import LGBMRegressor
  
 ############################################## 
 def working_day():
@@ -20,8 +22,8 @@ def working_day():
             'WD': workday}  
 
     # working day
-    WD = pd.DataFrame(data)
-    return WD
+    wd = pd.DataFrame(data)
+    return wd
 ############################################## 
 def Temperature():
     date = "01-01-2019	01-02-2019	01-03-2019	01-04-2019	01-05-2019	01-06-2019	01-07-2019	01-08-2019	01-09-2019	01-10-2019	01-11-2019	01-12-2019	01-01-2020	01-02-2020	01-03-2020	01-04-2020	01-05-2020	01-06-2020	01-07-2020	01-08-2020	01-09-2020	01-10-2020	01-11-2020	01-12-2020	01-01-2021	01-02-2021	01-03-2021	01-04-2021	01-05-2021	01-06-2021	01-07-2021	01-08-2021	01-09-2021	01-10-2021	01-11-2021	01-12-2021	01-01-2022	01-02-2022	01-03-2022	01-04-2022	01-05-2022	01-06-2022	01-07-2022	01-08-2022	01-09-2022	01-10-2022	01-11-2022	01-12-2022	01-01-2023	01-02-2023	01-03-2023	01-04-2023	01-05-2023	01-06-2023	01-07-2023	01-08-2023	01-09-2023	01-10-2023	01-11-2023	01-12-2023	01-01-2024	01-02-2024	01-03-2024	01-04-2024	01-05-2024	01-06-2024	01-07-2024	01-08-2024	01-09-2024	01-10-2024	01-11-2024	01-12-2024"
@@ -265,3 +267,181 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
     return df_P
     
     
+################################################
+#make dataframe for walk-forward forecast
+def make_future_dataframe(self, periods, freq='MS'):
+    #make dataframe for forecast
+    last_date = self.index.max()
+    dates = pd.date_range(
+        start=last_date,
+        periods=periods + 1,  # An extra in case we include start
+        freq=freq)
+    dates = dates[dates > last_date]  # Drop start if equals last_date
+    dates = dates[:periods]  # Return correct number of periods
+    return pd.DataFrame(index= dates)
+
+#feature enginering    
+def time_features(df: pd.DataFrame()):
+    temperature = Temperature()
+    wd = working_day()
+    #Creates time series features from datetime index
+    df['date'] = pd.to_numeric(df.index, downcast='integer')
+    df['quarter'] = df.index.quarter
+    df['month'] = df.index.month
+    df['year'] = df.index.year
+    df['lag1'] = df.iloc[:,0].shift(1)
+    df['lag2'] = df.iloc[:,0].shift(2)
+    df['lag3'] = df.iloc[:,0].shift(3)
+    df['lag4'] = df.iloc[:,0].shift(4)
+    df['wd'] = wd.WD
+    df['wd-lag1'] = wd.WD.shift(1)
+    df['wd-lag2'] = wd.WD.shift(2)
+    df['tempe'] = temperature['max']
+    df['tempe-lag1'] = temperature['max'].shift(1)
+    df['tempe-lag2'] = temperature['max'].shift(2)
+    #return df
+    
+
+#FUNCTION TO FIND OPTIMAL PARAMETER
+def optimal_fc(df: pd.DataFrame()):
+    X = df.iloc[:,-len(df.columns)+1:]
+    y = df.iloc[:,0]
+    X_train = X.head(len(X)-1)
+    X_test = X.tail(1)
+    y_train = y.head(len(y)-1)
+    y_test = y.tail(1)
+    
+    
+    xgb_param_gridsearch = {  
+        'learning_rate': [0.001, 0.01, 0.1],
+        'max_depth': [5,10,25],
+        'n_estimators': [100,1000],
+        'tree_method': ['hist','exact'],
+        'max_leaves': [5,10,20,40]
+                        }
+    
+    
+    xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
+    xgb_list =[]
+    for params in xgb_all_params:
+        xgboost = XGBRegressor(**params,objective='reg:squarederror')
+        xgboost.fit(X_train, y_train)
+        xgb_list.append(np.sqrt(MSE(y_train, xgboost.predict(X_train)))  )
+    
+    rmse_xgb = np.sqrt(MSE(y_train, xgboost.predict(X_train)))
+    minxgb = xgb_all_params[np.argmin(xgb_list)]
+    
+    
+    
+    lgbm_param_gridsearch = {  
+        'learning_rate': [0.001, 0.01, 0.1],
+        'max_depth': [5,10,25],
+        'n_estimators': [10,300,1000],
+        #'max_leaves': [5,15,30],
+        'num_leaves': [2,10,20],
+        'min_gain_to_split': [3,10,20],
+        'min_sum_hessian_in_leaf': [1,10]
+                        }
+    
+    
+    lgbm_all_params = [dict(zip(lgbm_param_gridsearch.keys(), v)) for v in itertools.product(*lgbm_param_gridsearch.values())]
+    lgbm_list =[]
+    for params in lgbm_all_params:
+        lgbm = LGBMRegressor(**params)
+        lgbm.fit(X_train, y_train)
+        lgbm_list.append(np.sqrt(MSE(y_train, lgbm.predict(X_train)))  )
+      
+    rmse_lgbm = np.sqrt(MSE(y_train, lgbm.predict(X_train)))
+    minlgbm = lgbm_all_params[np.argmin(lgbm_list)]
+    
+    return minxgb, minlgbm, rmse_xgb, rmse_lgbm
+####################################################################
+
+#FUNCTION TO MAKE FORECAST
+####################################################################
+# fit an xgboost model and make a one step prediction
+def xgboost_forecast(df: pd.DataFrame(),*args):
+    X = df.iloc[:,-len(df.columns)+1:]
+    y = df.iloc[:,0]
+    X_train = X.head(len(X)-1)
+    X_test = X.tail(1)
+    y_train = y.head(len(y)-1)
+    #y_test = y.tail(1)
+    
+    minxgb = {}
+    for i in args:
+        for key, value in i.items():
+            minxgb[key] = value
+
+    xgboost = XGBRegressor(**minxgb,objective='reg:squarederror')
+    
+    
+    xgboost.fit(X_train, y_train,verbose=False)
+    # make a one-step prediction
+    yhat = xgboost.predict(X_test)
+    #yhat = xgboost.best_estimator_.predict(X_test)
+    
+    return yhat[0]
+
+def lightgbm_forecast(df: pd.DataFrame(),*args):
+    X = df.iloc[:,-len(df.columns)+1:]
+    y = df.iloc[:,0]
+    X_train = X.head(len(X)-1)
+    X_test = X.tail(1)
+    y_train = y.head(len(y)-1)
+    #y_test = y.tail(1)
+    
+    
+    minlgbm = {}
+    for i in args:
+        for key, value in i.items():
+            minlgbm[key] = value
+    
+    lgbm = LGBMRegressor(**minlgbm)
+    
+   
+    
+    lgbm.fit(X_train, y_train,verbose=False)
+    # make a one-step prediction
+    yhat = lgbm.predict(X_test)
+    #yhat = lgbm.best_estimator_.predict(X_test)
+    return yhat[0]
+
+####################################################################
+
+def ML_FC(data: pd.DataFrame):
+ df_XGB = pd.DataFrame()
+ df_LGBM = pd.DataFrame()
+ df_fc = pd.DataFrame()
+ fcperiod = fc_length()
+
+
+ for sku in list(data):
+     df = pd.DataFrame(data[sku].copy(deep=True))
+     minxgb, minlgbm, rmse_xgb, rmse_lgbm = optimal_fc(df)
+
+
+     for i in range(1,fcperiod+1):
+         if i == 1:
+             df_fc = pd.concat([df,make_future_dataframe(df,1)])
+         else:
+             df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
+         time_features(df_fc)
+         df_fc.iloc[-1:,0] = lightgbm_forecast(df_fc,minlgbm)
+     df_LGBM[sku] = df_fc[sku].tail(fcperiod)
+
+
+     for i in range(1,fcperiod+1):
+         if i == 1:
+             df_fc = pd.concat([df,make_future_dataframe(df,1)])
+         else:
+             df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
+         time_features(df_fc)
+         df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,minxgb)
+     df_XGB[sku] = df_fc[sku].tail(fcperiod)
+
+
+
+ df_XGB['Model'] = 'XGB'
+ df_LGBM['Model'] = 'LightGBM'
+

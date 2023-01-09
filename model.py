@@ -18,11 +18,8 @@ def working_day():
     workday = "29	18	31	28	30	30	31	31	29	31	30	31	21	29	31	26	30	30	31	31	28	31	30	31	30	19	31	26	30	24	18	16	21	31	30	31	27	22	31	27	30	30	31	31	27	31	30	31	20	28	31	28	30	30	31	31	27	31	30	30"
     workday = workday.split("\t")
 
-    data = {'Date': date,
-            'WD': workday}  
-
     # working day
-    wd = pd.DataFrame(data)
+    wd = pd.DataFrame(workday, columns=['WD'],index=date)
     return wd
 ############################################## 
 def Temperature():
@@ -32,9 +29,9 @@ def Temperature():
     tempe = "32,9	34	34,6	35,2	34,9	33,6	33,2	32	31,8	33,2	32	31,9	33,6	34,1	34,7	35,3	35,5	33,5	33	32,8	32,5	31	32,3	31,8	31,6	31,9	34,8	34,1	34	33,3	32,8	33	32	31,6	32,4	31,8	32,7	34	34,4	33,8	33,2	33,6	32,2	32,5	32	31,90322581	32,19009884	31,72024768	32,5705797	33,35954639	34,48137687	34,44146772	34,22633743	33,36176057	32,65186798	32,45691481	31,92987194	31,78416764	32,11494027	31,64335999	32,47216563	33,27521413	34,39948992	34,35083719	34,13980721	33,27721604	32,56399696	32,37006076	31,84410611	31,69721169	32,11494027	31,64335999"
     tempe = tempe.split("\t")
 
-    data = {'Date': date,
-          'max': tempe} 
-    temperature = pd.DataFrame(data)
+    #data = {'Date': date,
+    #      'max': tempe} 
+    temperature = pd.DataFrame(tempe, columns=['max'],index=date)
     return temperature
 
 ############################################## 
@@ -303,7 +300,7 @@ def time_features(df: pd.DataFrame()):
     
 
 #FUNCTION TO FIND OPTIMAL PARAMETER
-def optimal_fc(df: pd.DataFrame()):
+def optimal_fc(df: pd.DataFrame(),model='XGB'):
     X = df.iloc[:,-len(df.columns)+1:]
     y = df.iloc[:,0]
     X_train = X.head(len(X)-1)
@@ -311,50 +308,53 @@ def optimal_fc(df: pd.DataFrame()):
     y_train = y.head(len(y)-1)
     y_test = y.tail(1)
     
-    
-    xgb_param_gridsearch = {  
-        'learning_rate': [0.001, 0.01, 0.1],
-        'max_depth': [5,10,25],
-        'n_estimators': [100,1000],
-        'tree_method': ['hist','exact'],
-        'max_leaves': [5,10,20,40]
-                        }
-    
-    
-    xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
-    xgb_list =[]
-    for params in xgb_all_params:
-        xgboost = XGBRegressor(**params,objective='reg:squarederror')
-        xgboost.fit(X_train, y_train)
-        xgb_list.append(np.sqrt(MSE(y_train, xgboost.predict(X_train)))  )
-    
-    rmse_xgb = np.sqrt(MSE(y_train, xgboost.predict(X_train)))
-    minxgb = xgb_all_params[np.argmin(xgb_list)]
-    
-    
-    
-    lgbm_param_gridsearch = {  
-        'learning_rate': [0.001, 0.01, 0.1],
-        'max_depth': [5,10,25],
-        'n_estimators': [10,300,1000],
-        #'max_leaves': [5,15,30],
-        'num_leaves': [2,10,20],
-        'min_gain_to_split': [3,10,20],
-        'min_sum_hessian_in_leaf': [1,10]
-                        }
+    if model =='XGB':
+
+        xgb_param_gridsearch = {  
+            'learning_rate': [0.001, 0.01, 0.1],
+            'max_depth': [5,10,25],
+            'n_estimators': [100,1000],
+            'tree_method': ['hist','exact'],
+            'max_leaves': [5,10,20,40]
+                            }
+
+
+        xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
+        xgb_list =[]
+        for params in xgb_all_params:
+            xgboost = XGBRegressor(**params,objective='reg:squarederror')
+            xgboost.fit(X_train, y_train)
+            xgb_list.append(np.sqrt(MSE(y_train, xgboost.predict(X_train)))  )
+
+        rmse_xgb = np.sqrt(MSE(y_train, xgboost.predict(X_train)))
+        minxgb = xgb_all_params[np.argmin(xgb_list)]
+        bestparam = minxgb
     
     
-    lgbm_all_params = [dict(zip(lgbm_param_gridsearch.keys(), v)) for v in itertools.product(*lgbm_param_gridsearch.values())]
-    lgbm_list =[]
-    for params in lgbm_all_params:
-        lgbm = LGBMRegressor(**params)
-        lgbm.fit(X_train, y_train)
-        lgbm_list.append(np.sqrt(MSE(y_train, lgbm.predict(X_train)))  )
-      
-    rmse_lgbm = np.sqrt(MSE(y_train, lgbm.predict(X_train)))
-    minlgbm = lgbm_all_params[np.argmin(lgbm_list)]
+    else:
+        lgbm_param_gridsearch = {  
+            'learning_rate': [0.001, 0.01, 0.1],
+            'max_depth': [5,10,25],
+            'n_estimators': [10,300,1000],
+            #'max_leaves': [5,15,30],
+            'num_leaves': [2,10,20],
+            'min_gain_to_split': [3,10,20],
+            'min_sum_hessian_in_leaf': [1,10]
+                            }
+
+
+        lgbm_all_params = [dict(zip(lgbm_param_gridsearch.keys(), v)) for v in itertools.product(*lgbm_param_gridsearch.values())]
+        lgbm_list =[]
+        for params in lgbm_all_params:
+            lgbm = LGBMRegressor(**params)
+            lgbm.fit(X_train, y_train)
+            lgbm_list.append(np.sqrt(MSE(y_train, lgbm.predict(X_train)))  )
+
+        rmse_lgbm = np.sqrt(MSE(y_train, lgbm.predict(X_train)))
+        minlgbm = lgbm_all_params[np.argmin(lgbm_list)]
+        bestparam = minlgbm
     
-    return minxgb, minlgbm, rmse_xgb, rmse_lgbm
+    return bestparam
 ####################################################################
 
 #FUNCTION TO MAKE FORECAST
@@ -409,7 +409,7 @@ def lightgbm_forecast(df: pd.DataFrame(),*args):
 
 ####################################################################
 
-def ML_FC(data: pd.DataFrame):
+def ML_FC(data: pd.DataFrame, model='XGB'):
  df_XGB = pd.DataFrame()
  df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()
@@ -418,32 +418,34 @@ def ML_FC(data: pd.DataFrame):
 
  for sku in list(data):
      df = pd.DataFrame(data[sku].copy(deep=True))
-     minxgb, minlgbm, rmse_xgb, rmse_lgbm = optimal_fc(df)
+     bestparam = optimal_fc(df,model)
+
+     if model =='LGBM':
+         for i in range(1,fcperiod+1):
+             if i == 1:
+                 df_fc = pd.concat([df,make_future_dataframe(df,1)])
+             else:
+                 df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
+             time_features(df_fc)
+             df_fc.iloc[-1:,0] = lightgbm_forecast(df_fc,bestparam)
+         df_LGBM[sku] = df_fc[sku].tail(fcperiod)
+         df_LGBM['Model'] = 'LightGBM'
+
+     else:
+         for i in range(1,fcperiod+1):
+             if i == 1:
+                 df_fc = pd.concat([df,make_future_dataframe(df,1)])
+             else:
+                 df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
+             time_features(df_fc)
+             df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
+         df_XGB[sku] = df_fc[sku].tail(fcperiod)
+         df_XGB['Model'] = 'XGB'
 
 
-     for i in range(1,fcperiod+1):
-         if i == 1:
-             df_fc = pd.concat([df,make_future_dataframe(df,1)])
-         else:
-             df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
-         time_features(df_fc)
-         df_fc.iloc[-1:,0] = lightgbm_forecast(df_fc,minlgbm)
-     df_LGBM[sku] = df_fc[sku].tail(fcperiod)
 
+ 
 
-     for i in range(1,fcperiod+1):
-         if i == 1:
-             df_fc = pd.concat([df,make_future_dataframe(df,1)])
-         else:
-             df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
-         time_features(df_fc)
-         df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,minxgb)
-     df_XGB[sku] = df_fc[sku].tail(fcperiod)
-
-
-
- df_XGB['Model'] = 'XGB'
- df_LGBM['Model'] = 'LightGBM'
  
  return df_XGB, df_LGBM
 

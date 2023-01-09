@@ -178,6 +178,8 @@ df_HW = pd.DataFrame()
 df_SARIMAX = pd.DataFrame()
 df_UCM = pd.DataFrame()
 df_P = pd.DataFrame()
+df_XGB = pd.DataFrame()
+df_LGBM = pd.DataFrame()
 
 
 

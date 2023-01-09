@@ -444,4 +444,6 @@ def ML_FC(data: pd.DataFrame):
 
  df_XGB['Model'] = 'XGB'
  df_LGBM['Model'] = 'LightGBM'
+ 
+ return df_XGB, df_LGBM
 

@@ -279,7 +279,7 @@ with col1:
                     'tree_method': tree_method,
                     'max_leaves': max_leaves
                         }
-            df_XGB, df_LGBM = md.ML_FC(df,model='XGB',select_type=select_type,param_gridsearch)
+            df_XGB, df_LGBM = md.ML_FC(df,model='XGB',select_type='Manual',param_gridsearch)
         else:
             df_XGB, df_LGBM = md.ML_FC(df)
             

@@ -282,7 +282,7 @@ with col1:
                         }
             '''
             #df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)
-            df_XGB = time_features(df)
+            df_XGB = md.time_features(df)
             st.write(df_XGB)
         else:
             df_XGB = md.ML_FC(df)

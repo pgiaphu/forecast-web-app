@@ -350,7 +350,8 @@ def xgboost_forecast(df: pd.DataFrame(),*args):
         for key, value in i.items():
             minxgb[key] = value
 
-    xgboost = XGBRegressor(**minxgb,objective='reg:squarederror')
+    #xgboost = XGBRegressor(**minxgb,objective='reg:squarederror')
+    xgboost = XGBRegressor(objective='reg:squarederror')
     
     
     xgboost.fit(X_train, y_train,verbose=False)
@@ -394,26 +395,27 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max
  future_index = []
  future_index.append(data.tail(12).index.shift(12,freq="MS"))
  for sku in list(data):
-     df = pd.DataFrame(data[sku].copy(deep=True))
-     if select_type == 'Auto':
-      bestparam = optimal_fc(df,model)
-     else:
-      bestparam =  {  
-                   'learning_rate': learning_rate,
-                   'max_depth': max_depth,
-                   'n_estimators': n_estimators,
-                   'tree_method': tree_method,
-                   'max_leaves': max_leaves
-                       }
+  df = pd.DataFrame(data[sku].copy(deep=True))
+  if select_type == 'Auto':
+   bestparam = optimal_fc(df,model)
+  else:
+   bestparam =  {  
+                'learning_rate': learning_rate,
+                'max_depth': max_depth,
+                'n_estimators': n_estimators,
+                'tree_method': tree_method,
+                'max_leaves': max_leaves
+                    }
 
 
- for i in range(1,fcperiod+1):
-     if i == 1:
-         df_fc = pd.concat([df,make_future_dataframe(df,1)])
-     else:
-         df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
-     time_features(df_fc)
-     df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
+  for i in range(1,fcperiod+1):
+      if i == 1:
+          df_fc = pd.concat([df,make_future_dataframe(df,1)])
+      else:
+          df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
+      time_features(df_fc)
+      #df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
+      df_fc.iloc[-1:,0] = xgboost_forecast(df_fc)
  df_XGB[sku] = df_fc[sku].tail(fcperiod)
  df_XGB['Model'] = 'XGB'
          

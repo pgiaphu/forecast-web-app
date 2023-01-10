@@ -384,7 +384,7 @@ def lightgbm_forecast(df: pd.DataFrame(),*args):
 
 def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*args):
  df_XGB = pd.DataFrame()
- df_LGBM = pd.DataFrame()
+ #df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()
  fcperiod = fc_length()
  future_index = []
@@ -411,6 +411,6 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*args):
          
 
  df_XGB.set_index(future_index,inplace=True)
- df_LGBM.set_index(future_index,inplace=True)
- return df_XGB, df_LGBM
+
+ return df_XGB
 

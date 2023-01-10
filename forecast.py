@@ -272,6 +272,7 @@ with col1:
             tree = st.select_slider(
                 'Tree_method',
                 options=['hist','exact'])
+            '''
             param_gridsearch = {  
                     'learning_rate': learning_rate,
                     'max_depth': max_depth,
@@ -279,6 +280,7 @@ with col1:
                     'tree_method': tree_method,
                     'max_leaves': max_leaves
                         }
+            '''
             df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)
         else:
             df_XGB = md.ML_FC(df)

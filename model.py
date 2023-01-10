@@ -394,10 +394,14 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max
      if select_type == 'Auto':
       bestparam = optimal_fc(df,model)
      else:
-      bestparam = {}
-      for i in args:
-        for key, value in i.items():
-            bestparam[key] = value 
+      bestparam =  {  
+                   'learning_rate': learning_rate,
+                   'max_depth': max_depth,
+                   'n_estimators': n_estimators,
+                   'tree_method': tree_method,
+                   'max_leaves': max_leaves
+                       }
+
 
  for i in range(1,fcperiod+1):
      if i == 1:

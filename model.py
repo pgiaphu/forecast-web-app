@@ -20,7 +20,7 @@ def working_day():
 
     # working day
     wd = pd.DataFrame(workday, columns=['WD'],index=date)
-    wd.index = ppd.to_datetime(wd.index,format="%d-%m-%Y")
+    wd.index = pd.to_datetime(wd.index,format="%d-%m-%Y")
     wd.index.freq = 'MS'
     return wd
 ############################################## 

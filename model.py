@@ -20,6 +20,7 @@ def working_day():
 
     # working day
     wd = pd.DataFrame(workday, columns=['WD'],index=date)
+    wd.WD = wd.WD.astype('int64')
     wd.index = pd.to_datetime(wd.index,format="%d-%m-%Y")
     wd.index.freq = 'MS'
     return wd
@@ -34,6 +35,7 @@ def Temperature():
     #data = {'Date': date,
     #      'max': tempe} 
     temperature = pd.DataFrame(tempe, columns=['max'],index=date)
+    temperature['max'] = temperature['max'].astype('float')
     temperature.index = pd.to_datetime(temperature.index,format="%d-%m-%Y")
     temperature.index.freq = 'MS'
     return temperature

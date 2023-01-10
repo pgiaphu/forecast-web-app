@@ -272,20 +272,12 @@ with col1:
             tree = st.select_slider(
                 'Tree_method',
                 options=['hist','exact'])
-            '''
-            param_gridsearch = {  
-                    'learning_rate': learning_rate,
-                    'max_depth': max_depth,
-                    'n_estimators': n_estimators,
-                    'tree_method': tree_method,
-                    'max_leaves': max_leaves
-                        }
-            '''
+
             df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)
             #df_XGB = md.time_features(df)
             
         else:
-            df_XGB = md.ML_FC(df)
+            #df_XGB = md.ML_FC(df)
             
             
     df['Model'] = 'Actual'

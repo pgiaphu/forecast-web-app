@@ -267,7 +267,7 @@ with col1:
         if select_type == 'Manual':
             learning = st.slider('learning_rate', 0.00, 1.00, 0.001)
             maxdep = st.slider('max_dept', 0, 100, 10)
-            n = st.slider('n_estimator', 10, 1000, 100)
+            n = st.slider('n_estimator', 1, 150, 10)
             maxlea = st.slider('max_leaves', 10, 100, 10)
             tree = st.select_slider(
                 'Tree_method',

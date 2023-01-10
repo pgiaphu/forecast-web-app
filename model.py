@@ -308,51 +308,24 @@ def optimal_fc(df: pd.DataFrame(),model='XGB'):
     y_train = y.head(len(y)-1)
     y_test = y.tail(1)
     
-    if model =='XGB':
+    xgb_param_gridsearch = {  
+        'learning_rate': [0.001, 0.01, 0.1],
+        'max_depth': [5,10,25],
+        'n_estimators': [100,1000],
+        'tree_method': ['hist','exact'],
+        'max_leaves': [5,10,20,40]
+                        }
+    xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
+    xgb_list =[]
+    for params in xgb_all_params:
+        xgboost = XGBRegressor(**params,objective='reg:squarederror')
+        xgboost.fit(X_train, y_train)
+        xgb_list.append(np.sqrt(MSE(y_train, xgboost.predict(X_train)))  )
 
-        xgb_param_gridsearch = {  
-            'learning_rate': [0.001, 0.01, 0.1],
-            'max_depth': [5,10,25],
-            'n_estimators': [100,1000],
-            'tree_method': ['hist','exact'],
-            'max_leaves': [5,10,20,40]
-                            }
-
-
-        xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
-        xgb_list =[]
-        for params in xgb_all_params:
-            xgboost = XGBRegressor(**params,objective='reg:squarederror')
-            xgboost.fit(X_train, y_train)
-            xgb_list.append(np.sqrt(MSE(y_train, xgboost.predict(X_train)))  )
-
-        rmse_xgb = np.sqrt(MSE(y_train, xgboost.predict(X_train)))
-        minxgb = xgb_all_params[np.argmin(xgb_list)]
-        bestparam = minxgb
-    
-    
-    else:
-        lgbm_param_gridsearch = {  
-            'learning_rate': [0.001, 0.01, 0.1],
-            'max_depth': [5,10,25],
-            'n_estimators': [10,300,1000],
-            #'max_leaves': [5,15,30],
-            'num_leaves': [2,10,20],
-            'min_gain_to_split': [3,10,20],
-            'min_sum_hessian_in_leaf': [1,10]
-                            }
-
-
-        lgbm_all_params = [dict(zip(lgbm_param_gridsearch.keys(), v)) for v in itertools.product(*lgbm_param_gridsearch.values())]
-        lgbm_list =[]
-        for params in lgbm_all_params:
-            lgbm = LGBMRegressor(**params)
-            lgbm.fit(X_train, y_train)
-            lgbm_list.append(np.sqrt(MSE(y_train, lgbm.predict(X_train)))  )
-
-        rmse_lgbm = np.sqrt(MSE(y_train, lgbm.predict(X_train)))
-        minlgbm = lgbm_all_params[np.argmin(lgbm_list)]
-        bestparam = minlgbm
+    rmse_xgb = np.sqrt(MSE(y_train, xgboost.predict(X_train)))
+    minxgb = xgb_all_params[np.argmin(xgb_list)]
+    bestparam = minxgb
+   
     
     return bestparam
 ####################################################################
@@ -416,8 +389,6 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*args):
  fcperiod = fc_length()
  future_index = []
  future_index.append(data.tail(12).index.shift(12,freq="MS"))
-
-
  for sku in list(data):
      df = pd.DataFrame(data[sku].copy(deep=True))
      if select_type == 'Auto':
@@ -427,29 +398,16 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*args):
       for i in args:
         for key, value in i.items():
             bestparam[key] = value 
-      
 
-     if model =='LGBM':
-         for i in range(1,fcperiod+1):
-             if i == 1:
-                 df_fc = pd.concat([df,make_future_dataframe(df,1)])
-             else:
-                 df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
-             time_features(df_fc)
-             df_fc.iloc[-1:,0] = lightgbm_forecast(df_fc,bestparam)
-         df_LGBM[sku] = df_fc[sku].tail(fcperiod)
-         df_LGBM['Model'] = 'LightGBM'
-
+ for i in range(1,fcperiod+1):
+     if i == 1:
+         df_fc = pd.concat([df,make_future_dataframe(df,1)])
      else:
-         for i in range(1,fcperiod+1):
-             if i == 1:
-                 df_fc = pd.concat([df,make_future_dataframe(df,1)])
-             else:
-                 df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
-             time_features(df_fc)
-             df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
-         df_XGB[sku] = df_fc[sku].tail(fcperiod)
-         df_XGB['Model'] = 'XGB'
+         df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
+     time_features(df_fc)
+     df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
+ df_XGB[sku] = df_fc[sku].tail(fcperiod)
+ df_XGB['Model'] = 'XGB'
          
 
  df_XGB.set_index(future_index,inplace=True)

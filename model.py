@@ -265,7 +265,7 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
         df_P[sku] = forecast.yhat.tail(fcperiod)
         df_P.set_index(future_index,inplace=True)
         df_P['Model'] = 'Prophet'
-    return df_P
+    #return df_P
     
     
 ################################################

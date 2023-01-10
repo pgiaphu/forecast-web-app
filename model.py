@@ -382,7 +382,7 @@ def lightgbm_forecast(df: pd.DataFrame(),*args):
 
 ####################################################################
 
-def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',*args):
+def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate,max_depth,n_estimators,tree_method,max_leaves):
  df_XGB = pd.DataFrame()
  #df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()

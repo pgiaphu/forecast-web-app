@@ -265,11 +265,11 @@ with col1:
             
     if 'XGBoosting' in model:
         if select_type == 'Manual':
-            learning_rate = st.slider('learning_rate', 0.00, 1.00, 0.001)
-            max_depth = st.slider('max_dept', 0, 100, 10)
-            n_estimators = st.slider('n_estimator', 10, 1000, 100)
-            max_leaves = st.slider('max_leaves', 10, 100, 10)
-            tree_method = st.select_slider(
+            learning = st.slider('learning_rate', 0.00, 1.00, 0.001)
+            maxdep = st.slider('max_dept', 0, 100, 10)
+            n = st.slider('n_estimator', 10, 1000, 100)
+            maxlea = st.slider('max_leaves', 10, 100, 10)
+            tree = st.select_slider(
                 'Tree_method',
                 options=['hist','exact'])
             param_gridsearch = {  
@@ -279,7 +279,7 @@ with col1:
                     'tree_method': tree_method,
                     'max_leaves': max_leaves
                         }
-            df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',param_gridsearch)
+            df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)
         else:
             df_XGB = md.ML_FC(df)
             

@@ -353,7 +353,7 @@ def xgboost_forecast(df: pd.DataFrame(),*args):
             minxgb[key] = value
 
     #xgboost = XGBRegressor(**minxgb,objective='reg:squarederror')
-    xgboost = XGBRegressor(objective='reg:squarederror')
+    xgboost = XGBRegressor(**minxgb,objective='reg:squarederror')
     
     
     xgboost.fit(X_train, y_train,verbose=False)
@@ -396,6 +396,12 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max
  fcperiod = 4
  future_index = []
  future_index.append(data.tail(fcperiod).index.shift(fcperiod,freq="MS"))
+ bestparam = {  
+    'learning_rate': learning_rate,
+    'max_depth': max_depth,
+    'n_estimators': n_estimators
+                    }
+ 
  for sku in list(data):
   df = pd.DataFrame(data[sku].copy(deep=True))
   for i in range(1,fcperiod+1):
@@ -405,11 +411,10 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max
           df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
       time_features(df_fc)
       #df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
-      df_fc.iloc[-1:,0] = xgboost_forecast(df_fc)
+      df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
+ 
  df_XGB[sku] = df_fc[sku].tail(fcperiod)
- df_XGB['Model'] = 'XGB'
-         
-
+ df_XGB['Model'] = 'XGB'     
  df_XGB.set_index(future_index,inplace=True)
 
  return df_XGB

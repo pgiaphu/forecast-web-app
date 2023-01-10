@@ -391,23 +391,11 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max
  df_XGB = pd.DataFrame()
  #df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()
- fcperiod = fc_length(1)
+ fcperiod = 1
  future_index = []
  future_index.append(data.tail(12).index.shift(12,freq="MS"))
  for sku in list(data):
   df = pd.DataFrame(data[sku].copy(deep=True))
-  if select_type == 'Auto':
-   bestparam = optimal_fc(df,model)
-  else:
-   bestparam =  {  
-                'learning_rate': learning_rate,
-                'max_depth': max_depth,
-                'n_estimators': n_estimators,
-                'tree_method': tree_method,
-                'max_leaves': max_leaves
-                    }
-
-
   for i in range(1,fcperiod+1):
       if i == 1:
           df_fc = pd.concat([df,make_future_dataframe(df,1)])

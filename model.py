@@ -389,17 +389,18 @@ def lightgbm_forecast(df: pd.DataFrame(),*args):
 
 ####################################################################
 
-def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max_depth=1,n_estimators=1,tree_method=1,max_leaves=1):
+def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max_depth=1,n_estimators=1,tree_method='hist',max_leaves=1):
  df_XGB = pd.DataFrame()
  #df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()
- fcperiod = 4
+ fcperiod = fc_length()
  future_index = []
  future_index.append(data.tail(fcperiod).index.shift(fcperiod,freq="MS"))
  bestparam = {  
     'learning_rate': learning_rate,
     'max_depth': max_depth,
-    'n_estimators': n_estimators
+    'n_estimators': n_estimators,
+    'tree_method': tree_method
                     }
  
  for sku in list(data):

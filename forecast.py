@@ -271,7 +271,7 @@ with col1:
             maxlea = st.slider('max_leaves', 10, 100, 10)
             tree = st.select_slider(
                 'Tree_method',
-                options=['hist','exact'])
+                options=['hist','gpu_hist','exact'])
 
             df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)
             #df_XGB = md.time_features(df)

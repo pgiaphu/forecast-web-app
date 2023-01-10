@@ -395,7 +395,7 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max
  df_fc = pd.DataFrame()
  fcperiod = 1
  future_index = []
- future_index.append(data.tail(12).index.shift(12,freq="MS"))
+ future_index.append(data.tail(fcperiod).index.shift(fcperiod,freq="MS"))
  for sku in list(data):
   df = pd.DataFrame(data[sku].copy(deep=True))
   for i in range(1,fcperiod+1):

@@ -296,7 +296,7 @@ def time_features(df: pd.DataFrame()):
     df['tempe'] = temperature['max']
     df['tempe-lag1'] = temperature['max'].shift(1)
     df['tempe-lag2'] = temperature['max'].shift(2)
-    #return df
+    return df
     
 
 #FUNCTION TO FIND OPTIMAL PARAMETER

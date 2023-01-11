@@ -9,7 +9,7 @@ def layout(*args):
         <style>
           # MainMenu {visibility: hidden;}
           footer {visibility: hidden;}
-         .stApp { bottom: 5px; }
+         .stApp { bottom: 3px; }
         </style>
     """
 
@@ -21,7 +21,7 @@ def layout(*args):
         width=percent(100),
         color="black",
         text_align="left",
-        height=5,
+        height=3,
         opacity=1
     )
 
@@ -56,9 +56,9 @@ def layout(*args):
 
 
 def footer():
-    myargs = ["If you need support",
+    myargs = ["If you need support,",
                 br(),
-                    "reach out to PhamGiaPhu@duytan.com",  
+                    "reach out to PhamGiaPhu@duytan.com,",  
                 br(),
                     "or call ☎:240"]
     layout(*myargs)

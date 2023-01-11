@@ -273,9 +273,18 @@ with col1:
                 'Tree_method',
                 options=['hist','gpu_hist','exact'])
 
-            df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)
-            #df_XGB = md.time_features(df)
-            
+            df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)         
+        #else:
+            #df_XGB = md.ML_FC(df)
+    if 'LightGBM' in model:
+        if select_type == 'Manual':
+            learning = st.slider('learning_rate', 0.000, 1.000, 0.010)
+            maxdep = st.slider('max_dept', 1, 10, 5)
+            n = st.slider('n_estimator', 1, 150, 10)
+            maxlea = st.slider('max_leaves', 2, 10, 3)
+            mingaintosplit = st.slider('min_gain_ro_split', 1, 10, 2)
+
+            df_LGBM = md.ML_FC(df,model='LGBM',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,min_gain_to_split=mingaintosplit,max_leaves=maxlea)        
         #else:
             #df_XGB = md.ML_FC(df)
             
@@ -283,7 +292,7 @@ with col1:
     df['Model'] = 'Actual'
     df['Month'] = df.index.month
     df['Year'] = df.index.year
-    df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM,df_P, df_XGB])
+    df = pd.concat([df,df_baseline,df_HW,df_SARIMAX,df_UCM,df_P, df_XGB,df_LGBM])
 
 
 with col2:

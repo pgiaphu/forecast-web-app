@@ -314,23 +314,43 @@ def optimal_fc(df: pd.DataFrame(),model='XGB'):
     y_train = y.head(len(y)-1)
     y_test = y.tail(1)
     
-    xgb_param_gridsearch = {  
-        'learning_rate': [0.001, 0.01, 0.1],
-        'max_depth': [5,10,25],
-        'n_estimators': [100,1000],
-        'tree_method': ['hist','exact'],
-        'max_leaves': [5,10,20,40]
-                        }
-    xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
-    xgb_list =[]
-    for params in xgb_all_params:
-        xgboost = XGBRegressor(**params,objective='reg:squarederror')
-        xgboost.fit(X_train, y_train)
-        xgb_list.append(np.sqrt(MSE(y_train, xgboost.predict(X_train)))  )
+    if model == 'XGB'
+     xgb_param_gridsearch = {  
+         'learning_rate': [0.01, 0.01, 0.3],
+         'max_depth': [1,5,10],
+         'n_estimators': [5,15],
+         'tree_method': ['hist','exact'],
+         'max_leaves': [3,5]
+                         }
+     xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
+     xgb_list =[]
+     for params in xgb_all_params:
+         xgboost = XGBRegressor(**params,objective='reg:squarederror')
+         xgboost.fit(X_train, y_train)
+         xgb_list.append(np.sqrt(MSE(y_train, xgboost.predict(X_train)))  )
 
-    rmse_xgb = np.sqrt(MSE(y_train, xgboost.predict(X_train)))
-    minxgb = xgb_all_params[np.argmin(xgb_list)]
-    bestparam = minxgb
+     rmse_xgb = np.sqrt(MSE(y_train, xgboost.predict(X_train)))
+     minxgb = xgb_all_params[np.argmin(xgb_list)]
+     bestparam = minxgb
+    else:
+     lgbm_param_gridsearch = {  
+        'learning_rate': [0.1, 0.3],
+        'max_depth': [3,5,10],
+        'n_estimators': [10,20],
+        'max_leaves': [3,5],
+        'min_gain_to_split': [3,5]
+                        }
+    
+    
+    lgbm_all_params = [dict(zip(lgbm_param_gridsearch.keys(), v)) for v in itertools.product(*lgbm_param_gridsearch.values())]
+    lgbm_list =[]
+    for params in lgbm_all_params:
+        lgbm = LGBMRegressor(**params)
+        lgbm.fit(X_train, y_train)
+        lgbm_list.append(np.sqrt(MSE(y_train, lgbm.predict(X_train)))  )
+      
+    rmse_lgbm = np.sqrt(MSE(y_train, lgbm.predict(X_train)))
+    bestparam = lgbm_all_params[np.argmin(lgbm_list)]
    
     
     return bestparam
@@ -389,7 +409,7 @@ def lightgbm_forecast(df: pd.DataFrame(),*args):
 
 ####################################################################
 
-def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max_depth=1,n_estimators=1,tree_method='hist',max_leaves=1,min_gain_to_split=1):
+def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=0.3,max_depth=1,n_estimators=40,tree_method='hist',max_leaves=1,min_gain_to_split=10):
  df_XGB = pd.DataFrame()
  df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()

@@ -56,8 +56,10 @@ def layout(*args):
 
 
 def footer():
-    myargs = ["""If you need support, 
-                    reach out to PhamGiaPhu@duytan.com  
-                    or call ☎:240"""]
+    myargs = ["If you need support",
+                br(),
+                    "reach out to PhamGiaPhu@duytan.com",  
+                br(),
+                    "or call ☎:240"]
     layout(*myargs)
    

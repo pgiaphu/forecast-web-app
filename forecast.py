@@ -265,10 +265,10 @@ with col1:
             
     if 'XGBoosting' in model:
         if select_type == 'Manual':
-            learning = st.slider('learning_rate', 0.00, 1.00, 0.001)
-            maxdep = st.slider('max_dept', 0, 100, 10)
+            learning = st.slider('learning_rate', 0.000, 1.000, 0.001)
+            maxdep = st.slider('max_dept', 0, 50, 5)
             n = st.slider('n_estimator', 1, 150, 10)
-            maxlea = st.slider('max_leaves', 10, 100, 10)
+            maxlea = st.slider('max_leaves', 2, 10, 3)
             tree = st.select_slider(
                 'Tree_method',
                 options=['hist','gpu_hist','exact'])

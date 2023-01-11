@@ -391,7 +391,7 @@ def lightgbm_forecast(df: pd.DataFrame(),*args):
 
 def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max_depth=1,n_estimators=1,tree_method='hist',max_leaves=1):
  df_XGB = pd.DataFrame()
- #df_LGBM = pd.DataFrame()
+ df_LGBM = pd.DataFrame()
  df_fc = pd.DataFrame()
  fcperiod = fc_length()
  future_index = []
@@ -412,11 +412,19 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=1,max
           df_fc = pd.concat([df_fc,make_future_dataframe(df_fc,1)])
       time_features(df_fc)
       #df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
-      df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
+      if model == 'XGB':
+       df_fc.iloc[-1:,0] = xgboost_forecast(df_fc,bestparam)
+      else:
+       df_fc.iloc[-1:,0] = lightgbm_forecast(df_fc,bestparam)
  
- df_XGB[sku] = df_fc[sku].tail(fcperiod)
- df_XGB['Model'] = 'XGB'     
- df_XGB.set_index(future_index,inplace=True)
+ if model == 'XGB':
+  df_XGB[sku] = df_fc[sku].tail(fcperiod)
+  df_XGB['Model'] = 'XGB'     
+  df_XGB.set_index(future_index,inplace=True)
+ else:
+  df_LGBM[sku] = df_fc[sku].tail(fcperiod)
+  df_LGBM['Model'] = 'LGBM'     
+  df_LGBM.set_index(future_index,inplace=True)
 
- return df_XGB
+ return df_XGB if model == 'XGB' else df_LGBM
 

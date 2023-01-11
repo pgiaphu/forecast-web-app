@@ -49,7 +49,7 @@ with st.sidebar:
     
     
     #####
-    #footer.footer()
+    footer.footer()
     
 ###################################
     if uploaded_file is not None:
@@ -355,4 +355,4 @@ with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
         mime="application/vnd.ms-excel"
     )
     
-st.markdown('If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240')
+#st.markdown('If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240')

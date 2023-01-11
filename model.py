@@ -417,7 +417,11 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=0.3,m
  future_index = []
  future_index.append(data.tail(fcperiod).index.shift(fcperiod,freq="MS"))
  if select_type == 'Auto':
-  bestparam = {}
+  bestparam = {  
+      'learning_rate': 0.25,
+      'max_depth': 3,
+      'n_estimators': 50
+                      }
  else: 
   if model == 'XGB':
    bestparam = {  

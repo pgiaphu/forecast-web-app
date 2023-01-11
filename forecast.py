@@ -274,8 +274,8 @@ with col1:
                 options=['hist','gpu_hist','exact'])
 
             df_XGB = md.ML_FC(df,model='XGB',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,tree_method=tree,max_leaves=maxlea)         
-        #else:
-            #df_XGB = md.ML_FC(df)
+        else:
+            df_XGB = md.ML_FC(df,model='XGB',select_type='Auto')
     if 'LightGBM' in model:
         if select_type == 'Manual':
             learning = st.slider('learning_rate', 0.000, 1.000, 0.010)
@@ -285,8 +285,8 @@ with col1:
             mingaintosplit = st.slider('min_gain_ro_split', 1, 10, 2)
 
             df_LGBM = md.ML_FC(df,model='LGBM',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,min_gain_to_split=mingaintosplit,max_leaves=maxlea)        
-        #else:
-            #df_XGB = md.ML_FC(df)
+        else:
+            df_LGBM = md.ML_FC(df,model='LGBM',select_type='Auto')
             
             
     df['Model'] = 'Actual'

@@ -314,13 +314,13 @@ def optimal_fc(df: pd.DataFrame(),model='XGB'):
     y_train = y.head(len(y)-1)
     y_test = y.tail(1)
     
-    if model == 'XGB'
+    if model == 'XGB':
      xgb_param_gridsearch = {  
-         'learning_rate': [0.01, 0.01, 0.3],
-         'max_depth': [1,5,10],
-         'n_estimators': [5,15],
+         'learning_rate': [0.01, 0.1, 0.3],
+         'max_depth': [1,3],
+         'n_estimators': [10,30],
          'tree_method': ['hist','exact'],
-         'max_leaves': [3,5]
+         'max_leaves': [1,3]
                          }
      xgb_all_params = [dict(zip(xgb_param_gridsearch.keys(), v)) for v in itertools.product(*xgb_param_gridsearch.values())]
      xgb_list =[]
@@ -335,10 +335,10 @@ def optimal_fc(df: pd.DataFrame(),model='XGB'):
     else:
      lgbm_param_gridsearch = {  
         'learning_rate': [0.1, 0.3],
-        'max_depth': [3,5,10],
-        'n_estimators': [10,20],
-        'max_leaves': [3,5],
-        'min_gain_to_split': [3,5]
+        'max_depth': [1,3],
+        'n_estimators': [10,30],
+        'max_leaves': [1,3],
+        'min_gain_to_split': [5,10]
                         }
     
     
@@ -416,20 +416,23 @@ def ML_FC(data: pd.DataFrame, model='XGB',select_type='Auto',learning_rate=0.3,m
  fcperiod = fc_length()
  future_index = []
  future_index.append(data.tail(fcperiod).index.shift(fcperiod,freq="MS"))
- if model == 'XGB':
-  bestparam = {  
-     'learning_rate': learning_rate,
-     'max_depth': max_depth,
-     'n_estimators': n_estimators,
-     'tree_method': tree_method
-                     }
- else:
+ if select_type == 'Auto':
+  bestparam = optimal_fc(df,model)
+ else: 
+  if model == 'XGB':
    bestparam = {  
-     'learning_rate': learning_rate,
-     'max_depth': max_depth,
-     'n_estimators': n_estimators,
-     'min_gain_to_split': min_gain_to_split
-                     }
+      'learning_rate': learning_rate,
+      'max_depth': max_depth,
+      'n_estimators': n_estimators,
+      'tree_method': tree_method
+                      }
+  else:
+    bestparam = {  
+      'learning_rate': learning_rate,
+      'max_depth': max_depth,
+      'n_estimators': n_estimators,
+      'min_gain_to_split': min_gain_to_split
+                      }
   
  
  for sku in list(data):

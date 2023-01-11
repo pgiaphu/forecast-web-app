@@ -54,7 +54,7 @@ def layout(*args):
     st.markdown(str(foot), unsafe_allow_html=True)
 
 #############
-footer="
+footer="""
 
 <style> your css code put here</style>
 
@@ -64,7 +64,7 @@ footer="
 
 href='https://www.streamlit.io' target='_blank'>phamgiaphu@duytan.com</a></p>
 
-</div>"
+</div>"""
 
 
 #############

@@ -66,11 +66,7 @@ with st.sidebar:
             f"""
                 👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan.sharepoint.com/:x:/s/baocaobi/EeDcLaIbl3VBrrjRitTVIFgBPX93RtQlNAPDy0Mpv4ieHg?e=PWtIVx)
                 """)
-        st.wrtite(["If you need support,",
-                br(),
-                    "reach out to PhamGiaPhu@duytan.com,",  
-                br(),
-                    "or call ☎:240"])
+        st.wrtite("If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240")
         
         
     else:
@@ -78,6 +74,7 @@ with st.sidebar:
             f"""
                 👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan.sharepoint.com/:x:/s/baocaobi/EeDcLaIbl3VBrrjRitTVIFgBPX93RtQlNAPDy0Mpv4ieHg?e=PWtIVx)
                 """)
+        st.wrtite("If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240")
         st.stop()
 
 ###################################

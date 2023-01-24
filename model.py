@@ -214,8 +214,8 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
     future_index.append(df.tail(12).index.shift(12,freq="MS"))
     
     param_gridsearch = {  
-            'changepoint_prior_scale': [0.001, 0.1, 0.5],
-            'growth': ['logistic','linear','flat'],
+            'changepoint_prior_scale': [0.001, 0.1, 0.3],
+            'growth': ['logistic','linear'],
             #'seasonality_prior_scale': [0.1, 4],
             'seasonality_mode': ['additive', 'multiplicative'],
             'n_changepoints': [5,10],

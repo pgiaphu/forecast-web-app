@@ -167,7 +167,7 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
         'irregular': [True,False],
         #'damped_cycle': [True,False],
         'use_exact_diffuse': [True,False],
-        'autoregressive': [0,1]
+        #'autoregressive': [0,1]
                         }
       UCM_all_params = [dict(zip(UCM_param_gridsearch.keys(), v)) for v in itertools.product(*UCM_param_gridsearch.values())]
       for sku in df.columns:

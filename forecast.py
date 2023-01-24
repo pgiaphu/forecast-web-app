@@ -336,6 +336,7 @@ st.pyplot(fig1)
 
 st.subheader("Filtered data will appear below 👇 ")
 st.text("")
+df = df.drop(['Month','Year'], axis=1)
 
 st.table(df)
 

@@ -215,10 +215,10 @@ def PPhet(df: pd.DataFrame,growth='linear',seasonality='additive',changepoint=0.
     
     param_gridsearch = {  
             'changepoint_prior_scale': [0.001, 0.1, 0.3],
-            'growth': ['logistic','linear'],
+            'growth': ['logistic','linear','flat'],
             #'seasonality_prior_scale': [0.1, 4],
             'seasonality_mode': ['additive', 'multiplicative'],
-            'n_changepoints': [5,10],
+            'n_changepoints': [1,3],
                             }
 
     all_params = [dict(zip(param_gridsearch.keys(), v)) for v in itertools.product(*param_gridsearch.values())]

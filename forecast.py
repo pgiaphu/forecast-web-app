@@ -68,7 +68,7 @@ with st.sidebar:
         
         st.info(
             f"""
-                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan.sharepoint.com/:x:/s/baocaobi/EeDcLaIbl3VBrrjRitTVIFgBPX93RtQlNAPDy0Mpv4ieHg?e=PWtIVx)
+                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://docs.google.com/spreadsheets/d/1Kce3dNFZHRZjz7jd7DNRxCEi5AdjUnaQEpOp-k1xKfw/edit?usp=sharing)
                 """)
         st.markdown("If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240")
         
@@ -76,7 +76,7 @@ with st.sidebar:
     else:
         st.info(
             f"""
-                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://duytan.sharepoint.com/:x:/s/baocaobi/EeDcLaIbl3VBrrjRitTVIFgBPX93RtQlNAPDy0Mpv4ieHg?e=PWtIVx)
+                👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://docs.google.com/spreadsheets/d/1Kce3dNFZHRZjz7jd7DNRxCEi5AdjUnaQEpOp-k1xKfw/edit?usp=sharing)
                 """)
         st.markdown("If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240")
         st.stop()

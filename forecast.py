@@ -45,7 +45,11 @@ with st.sidebar:
     )    
     st.title("TIME SERIES FORECAST")
     st.title("1. Select Data")
-    uploaded_file = st.file_uploader("Choose a Excel file")
+    data_options = st.checkbox("Load sample data", True)
+    if data_options == True:
+        uploaded_file = "AS.xlsx"
+    else:
+        uploaded_file = st.file_uploader("Choose a Excel file")
     
     
     #####

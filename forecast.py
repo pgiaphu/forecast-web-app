@@ -214,9 +214,18 @@ col1, col2 = st.columns([2,8])
 with col1:
     st.write('Select your paramater')
     
-    select_type =  st.radio(
+    if 'XGBoosting' in model or 'LightGBM' in model: 
+        select_type =  st.radio(
                 "Choose your forecast model 👇",
                 ['Auto', 'Manual'],
+                key="selecttype",
+                label_visibility='collapsed',
+                disabled=False,
+                horizontal=True)
+    else:
+        select_type =  st.radio(
+                "Choose your forecast model 👇",
+                ['Manual'],
                 key="selecttype",
                 label_visibility='collapsed',
                 disabled=False,

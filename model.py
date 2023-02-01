@@ -155,7 +155,7 @@ def SARIMAX(df: pd.DataFrame,p=0,q=0,d=0,pseas=0,qseas=0,dseas=0):
     df_SARIMAX['Model'] = 'SARIMAX'
     return df_SARIMAX
 ############################################## 
-def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
+def UCM(df: pd.DataFrame,f=12,ar=0,ucmmodel='ntrend'):
       df = clean_outlier(df)
       fcperiod = fc_length()
       df_UCM = pd.DataFrame()
@@ -171,7 +171,7 @@ def UCM(df: pd.DataFrame,f=0,ar=0,ucmmodel='ntrend'):
                         }
       UCM_all_params = [dict(zip(UCM_param_gridsearch.keys(), v)) for v in itertools.product(*UCM_param_gridsearch.values())]
       for sku in df.columns:
-        if f+ar == 0 and ucmmodel == 'ntrend':
+        if f+ar == 12 and ucmmodel == 'ntrend':
           ucm =[]
           for params in UCM_all_params: 
             ucm.append(sm.tsa.UnobservedComponents(

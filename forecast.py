@@ -217,7 +217,7 @@ with col1:
     if 'XGBoosting' in model or 'LightGBM' in model: 
         select_type =  st.radio(
                 "Choose your forecast model 👇",
-                ['Auto', 'Manual'],
+                ['Manual'],
                 key="selecttype",
                 label_visibility='collapsed',
                 disabled=False,
@@ -233,9 +233,9 @@ with col1:
  
     if 'Holt-Winter' in model:
         if select_type == 'Manual':
-            alpha = st.slider('alpha', 0.00, 1.00, 0.25)
+            alpha = st.slider('alpha', 0.00, 1.00, 0.3)
             beta = st.slider('beta', 0.00, 1.00, 0.25)
-            gamma = st.slider('gamma', 0.00, 1.00, 0.25)
+            gamma = st.slider('gamma', 0.00, 1.00, 0.5)
             df_HW = md.HoltWinter(df,alpha,beta,gamma)
         else:
             df_HW = md.HoltWinter(df)
@@ -245,7 +245,7 @@ with col1:
             ucmmodel = st.select_slider(
                 'Model',
                 options=['ntrend','dconstant','llevel','rwalk','dtrend','lldtrend','rwdrift','lltrend','strend','rtrend'])
-            ar = st.number_input('Auto Regressive',value=1,min_value=0,max_value=12,step=1)
+            ar = st.number_input('Auto Regressive',value=0,min_value=0,max_value=1,step=1)
             f = st.number_input('Fourier order',value=1,min_value=0,max_value=100,step=2)
             df_UCM = md.UCM(df,f,ar,ucmmodel)         
         else:
@@ -281,9 +281,9 @@ with col1:
     if 'XGBoosting' in model:
         if select_type == 'Manual':
             learning = st.slider('learning_rate', 0.000, 1.000, 0.001)
-            maxdep = st.slider('max_dept', 0, 50, 5)
+            maxdep = st.slider('max_dept', 0, 50, 3)
             n = st.slider('n_estimator', 1, 150, 10)
-            maxlea = st.slider('max_leaves', 2, 10, 3)
+            maxlea = st.slider('max_leaves', 2, 10, 2)
             tree = st.select_slider(
                 'Tree_method',
                 options=['hist','gpu_hist','exact'])
@@ -294,9 +294,9 @@ with col1:
     if 'LightGBM' in model:
         if select_type == 'Manual':
             learning = st.slider('learning_rate', 0.000, 1.000, 0.010)
-            maxdep = st.slider('max_dept', 1, 10, 5)
+            maxdep = st.slider('max_dept', 1, 10, 3)
             n = st.slider('n_estimator', 1, 150, 10)
-            maxlea = st.slider('max_leaves', 2, 10, 3)
+            maxlea = st.slider('max_leaves', 2, 10, 2)
             mingaintosplit = st.slider('min_gain_ro_split', 1, 10, 2)
 
             df_LGBM = md.ML_FC(df,model='LGBM',select_type='Auto',learning_rate=learning,max_depth=maxdep,n_estimators=n,min_gain_to_split=mingaintosplit,max_leaves=maxlea)        

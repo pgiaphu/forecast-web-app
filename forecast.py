@@ -19,7 +19,6 @@ from st_aggrid import GridUpdateMode, DataReturnMode
 import model as md
 import footer as footer
 ###################################
-
 def _max_width_():
     max_width_str = f"max-width: 2400px;"
     st.markdown(
@@ -32,12 +31,8 @@ def _max_width_():
     """,
         unsafe_allow_html=True,
     )
-
 st.set_page_config(page_icon="📊", page_title="Forecast",layout="wide")
-
-
 ###################################
-
 with st.sidebar:
     st.image(
     "https://www.duytan.com/Data/Sites/1/media/home/logo_duytan_scgp-endorsement_full-color-01.png",
@@ -49,12 +44,7 @@ with st.sidebar:
     if data_options == True:
         uploaded_file = "AS.xlsx"
     else:
-        uploaded_file = st.file_uploader("Choose a Excel file")
-    
-    
-    #####
-    #footer.footer()
-    
+        uploaded_file = st.file_uploader("Choose a Excel file")  
 ###################################
     if uploaded_file is not None:
         df_as = pd.read_excel(uploaded_file, sheet_name = "Full History")
@@ -63,16 +53,13 @@ with st.sidebar:
         df_fc = pd.read_excel(uploaded_file, sheet_name = "Forecast")
         df_fc = df_fc.drop(['Channel','Customer','Customer Name'], axis=1)
         df_fc.loc[:, ~df_fc.columns.isin(['Channel', 'Customer','Customer Name','Group','Material','Description'])] = df_fc.loc[:, ~df_fc.columns.isin(['Channel', 'Customer','Customer Name','Group','Material','Description'])].apply(np.ceil)
-        
-        
-        
+     
         st.info(
             f"""
                 👆 Upload your .xlsx file to make forecast. Here's a sample file: [Actual Sales](https://docs.google.com/spreadsheets/d/1Kce3dNFZHRZjz7jd7DNRxCEi5AdjUnaQEpOp-k1xKfw/edit?usp=sharing)
                 """)
         st.markdown("If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240")
-        
-        
+       
     else:
         st.info(
             f"""
@@ -83,10 +70,6 @@ with st.sidebar:
 
 ###################################
 
-
-
-
-
 st.subheader('2. Data loading 📋')
 st.write("Your baseline forecast will show here.")
 #st.write(shows)
@@ -96,11 +79,8 @@ st.write("Your baseline forecast will show here.")
 gb = GridOptionsBuilder.from_dataframe(df_fc)
 #gb.configure_default_column(shows2.columns[0])
 gb.configure_column(df_fc.columns[0], rowGroup=True)
-###
-
 #gb.configure_column(shows2['Material'],headerCheckboxSelection=False)
 gb.configure_selection(selection_mode="single",use_checkbox=True)
-
 #gb.configure_side_bar()
 gb.configure_columns(df_fc.columns.values.tolist(),headerCheckboxSelection=False, editable=True)
 js = JsCode("""
@@ -118,7 +98,6 @@ js = JsCode("""
 
             };
             """)
-
 gb.configure_grid_options(onCellValueChanged=js)
 gridOptions = gb.build()
 
@@ -126,10 +105,7 @@ st.markdown("""
             ###
             Edited cells are highlighted
             """)
-
 #response = AgGrid(shows2, gridOptions=gridOptions, key=shows2.columns[0], allow_unsafe_jscode=True, reload_data=False)
-
-
 response = AgGrid(
     df_fc,
     gridOptions=gridOptions,
@@ -139,10 +115,6 @@ response = AgGrid(
     data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
     fit_columns_on_grid_load=False,)
     #columns_auto_size_mode=ColumnsAutoSizeMode.FIT_CONTENTS)
-
-
-
-
 #########################################
 
 
@@ -358,12 +330,8 @@ from io import BytesIO
 buffer = BytesIO()
 
 with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-    # Write each dataframe to a different worksheet.
     df.to_excel(writer, sheet_name='Sheet1')
-
-    # Close the Pandas Excel writer and output the Excel file to the buffer
     writer.save()
-
     st.download_button(
         label="Download Excel worksheets",
         data=buffer,
@@ -371,4 +339,3 @@ with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
         mime="application/vnd.ms-excel"
     )
     
-#st.markdown('If you need support, reach out to PhamGiaPhu@duytan.com or call ☎:240')

@@ -35,7 +35,7 @@ st.set_page_config(page_icon="📊", page_title="Forecast",layout="wide")
 ###################################
 with st.sidebar:
     st.image(
-    "https://www.duytan.com/Data/Sites/1/media/home/logo_duytan_scgp-endorsement_full-color-01.png",
+    "https://www.pnj.com.vn/images/logo/logo_pnj.png",
     width=300,
     )    
     st.title("TIME SERIES FORECAST")
